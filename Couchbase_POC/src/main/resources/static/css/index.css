@@ -1,0 +1,194 @@
+@charset "EUC-KR";
+
+#header {
+	width: 100%;
+	height: 100px;
+	background-color: #4287d6;
+	display: flex;
+	justify-content: center;
+}
+
+#header a img {
+	width: 80px;
+	height: 96px;
+}
+
+#header-tab {
+	display: flex;
+	position: relative;
+	justify-content: center;
+	align-items: stretch;
+	background-color: #669ee0;
+	padding: 5px;
+}
+
+#header-tab a.selected {
+	background-color: #79aae4;
+}
+
+.menu a {
+	font-size: .875rem;
+	font-weight: 400;
+	cursor: pointer;
+	padding: 1px 2.5rem 2px 2rem;
+	color: #fff;
+	position: relative;
+	text-decoration: none;
+	font-size: 17px;
+}
+
+.menu a:hover {
+	font-size: 18px;
+	background-color: #79aae4;
+}
+
+body {
+	font-size: 14px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0;
+	padding: 0;
+	width:100%;
+}
+
+h1 {
+	font-size: 25px;
+	margin: 5px;
+	padding: 5px;
+	padding-left: 20px;
+	font-weight: 100;
+	color: #333;
+	margin-bottom: 8px;
+	border-left: 0.6rem solid #64cc17;
+	font-weight: bold;
+	text-align: left;
+}
+
+h2{
+	font-size: 1.5rem;
+    font-weight: 600;
+    color: #000;
+    display: block;
+    line-height: 1.7;
+}
+
+.container {
+	display: flex;
+	position: relative;
+	justify-content: center;
+	align-items: center;
+	padding: 5px;
+	margin: 20px;
+	transform: translateY(10%);
+}
+
+.container-div {
+	font-size: .875rem;
+	font-weight: 400;
+	position: relative;
+	text-decoration: none;
+	font-size: 17px;
+}
+
+
+.container-div div {
+	font-size: 20px;
+	padding-bottom: 35px;
+}
+
+input[type="file"]{
+   -webkit-appearance: none;
+   text-align: left;
+   -webkit-rtl-ordering:  right;
+}
+input[type="file"]::-webkit-file-upload-button{
+   -webkit-appearance: none;
+   float: right;
+   margin: 0 0 0 10px;
+   border: 1px solid #aaaaaa;
+   border-radius: 4px;
+   background-image: -webkit-gradient(linear, left bottom, left top, from(#d2d0d0), to(#f0f0f0));
+   background-image: -moz-linear-gradient(90deg, #d2d0d0 0%, #f0f0f0 100%);
+}
+
+input[type="radio"] {
+	width: 20px;
+	height: 20px;
+	margin-left: 15px;
+	border: 0;
+	float:right;
+}
+
+label{
+	float:right;
+	vertical-align: middle;
+	margin-top:5px;
+}
+
+select {
+	float:right;
+}
+
+input[type="text"], input[type="password"]{
+	height: auto; /* 높이 초기화 */
+	line-height: normal; /* line-height 초기화 */
+	padding: .8em .5em; /* 여백 설정 */
+	margin-left: 15px;
+	float: right;
+}
+
+input[type="file"] {
+	float:right;
+	margin-left:20px;
+}
+
+select {
+	-moz-appearance: none;
+	appearance: none;
+	line-height: normal;
+	padding: .8em .5em;
+	margin-left: 15px;
+}
+
+.n1qlexcute {
+	border: none;
+	color: white;
+	padding: 10px 15px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	cursor: pointer;
+	border-radius: 12px;
+	background-color: #4287d6;
+	transition-duration: 0.4s;
+}
+
+.n1qlexcute:hover {
+	background-color: #79aae4;
+}
+
+textarea {
+	width: 90%;
+	height: 180px;
+	background-color: #ebecf0;
+}
+
+.float-frame {
+	background: rgb(255, 255, 255);
+	padding: 10px;
+	margin:25px;
+	zoom: 1;
+	width: auto;
+}
+
+.float-division {
+	background: rgb(255, 255, 255);
+	padding: 10px;
+	float: left;
+	border: 2px dotted rgb(0, 0, 0, .10);
+}
+
+.float-division div{
+	padding-top:30px;
+}
