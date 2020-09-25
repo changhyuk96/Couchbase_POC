@@ -4,6 +4,7 @@ public class ConnectDTO{
 		
 	
 	private String 	strHostName;
+	private String 	portNumber;
 	private String 	strUserName;
 	private String 	strPassword;
 	private String 	strBucketName;
@@ -46,18 +47,19 @@ public class ConnectDTO{
 	
 	public ConnectDTO() {}
 	public ConnectDTO(
-			String strHostName, String strUserName, String strPassword, String strBucketName, long lKeyValueTO, 							/**/
+			String strHostName, String portNumber, String strUserName, String strPassword, String strBucketName, long lKeyValueTO, 							/**/
 			long lViewTO, long lQueryTO, long lConnectTO, long lDisConnectTO, long lManagementTO,
 			Boolean isSslEnable, String strSslKeyLoc, String strSslKeyPwd, Boolean isHttpEnable, int intHttpDrtPort, int intHttpSslPort, 	/**/
 			Boolean isCarrEnable, int intCarrDrtPort, int intCarrSslPort, Boolean isDnsSrvEnable, Boolean isMutatTknEnable,
 			Long lMaxReqLifeTime, Long lKeepAliveInterval,																					/**/
-			int intKvEndpointse, int intViewEndpoint, int intQueryEndpoint, boolean isTcpNodelayEnable,										/**/
+			int intKvEndpoints, int intViewEndpoint, int intQueryEndpoint, boolean isTcpNodelayEnable,										/**/
 			int intRequestBufferSize, int intResponseBufferSize, boolean isBufferPoolEnab													/**/
 		) {
 		
 		super();
 		
 		this.strHostName	= strHostName;
+		this.portNumber = portNumber;
 		this.strUserName 	= strUserName;
 		this.strPassword 	= strPassword;
 		this.strBucketName 	= strBucketName;
@@ -83,7 +85,7 @@ public class ConnectDTO{
 		this.lMaxReqLifeTime	= lMaxReqLifeTime;
 		this.lKeepAliveInterval = lKeepAliveInterval;
 		
-		this.intKvEndpoints		= intKvEndpoints;
+		this.intKvEndpoints     = intKvEndpoints;
 		this.intViewEndpoint 	= intViewEndpoint;
 		this.intQueryEndpoint 	= intQueryEndpoint;
 		this.isTcpNodelayEnable	= isTcpNodelayEnable;
@@ -92,6 +94,14 @@ public class ConnectDTO{
 		this.intResponseBufferSize	= intResponseBufferSize;
 		this.isBufferPoolEnab 		= isBufferPoolEnab;
 		
+	}
+	
+	public String getPortNumber() {
+		return portNumber;
+	}
+	
+	public void setPortNumber(String portNumber) {
+		this.portNumber = portNumber;
 	}
 	public String getStrHostName() {
 		return strHostName;

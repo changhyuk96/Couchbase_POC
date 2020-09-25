@@ -5,9 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Couchbase</title>
-<link rel="stylesheet" type="text/css" href="static/css/index.css">
 </head>
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
 <script>
 	function connectionData() {
@@ -55,7 +53,8 @@
 	
 	function testButton(){
 		
-		document.querySelector('#txtHostName').value='localhost';
+		document.querySelector('#txtHostName').value='192.168.0.27';
+		document.querySelector('#portNumber').value='8091';
 		document.querySelector('#txtUserName').value='Admin';
 		document.getElementById("pwdPassword").value='tf4220';
 		document.querySelector('#txtBucketName').value='test';
@@ -65,29 +64,10 @@
 </script>
 
 <body>
-	<div id="header">
-		<a> <img src="static/image/cb_logo_bug_white_2.svg"
-			alt="Couchbase Server" class="logobug">
-		</a>
-	</div>
-	<div id=header-tab>
-		<div class="menu">
-			<a href="settings"> 서버 연결 및 환경 설정 </a>
-		</div>
-		<div class="menu">
-			<a href="randomDataPage"> 랜덤 데이터 설정 </a>
-		</div>
-		<div class="menu">
-			<a href="createBucketPage"> 버킷 생성 </a>
-		</div>
-		<div class="menu">
-			<a href="documentManagePage"> 문서 작업 </a>
-		</div>
-		<div class="menu">
-			<a href="CsvOrFileUpsertPage"> Csv 및 Json 파일 Upsert </a>
-		</div>
-	</div>
-
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	<!-- header.jsp -->
+	<c:import url="/WEB-INF/view/header.jsp">
+	</c:import>
 
 		<div class="float-frame" style="margin:25px;">
 			<form id="conDataForm" name="conDataForm" >
@@ -97,6 +77,10 @@
 					<h2 style="margin-bottom:-15px;"> - Connection </h2>
 					<div>
 						# 호스트 이름 <input type="text" name="txtHostName" id="txtHostName" />
+					</div>
+					
+					<div>
+						# 포트번호 <input type="text" name="portNumber" id="portNumber" />
 					</div>
 		
 					<div>
@@ -111,9 +95,9 @@
 						# 버킷 이름 <input type="text" name="txtBucketName" id ="txtBucketName" />
 					</div>
 					
-		<!-- 			<div style="align-items:bottom; text-align:right;">
+				<div style="align-items:bottom; text-align:right;">
 						<button type="button" class="n1qlexcute" onclick="testButton();">테스트</button>
-					</div> -->
+					</div>
 			</div>
 			
 			<div class="float-division">
@@ -250,7 +234,7 @@
 				</div>
 				<div>
 					# HTTP 비 암호화 포트 설정
-					<input type="text" name="txtHttpDirectPort" value=8091
+					<input type="text" name="txtHttpDirectPort" value=8891
 						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
 				</div>
 				<div>

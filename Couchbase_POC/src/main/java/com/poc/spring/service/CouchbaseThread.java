@@ -7,10 +7,10 @@ import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.document.StringDocument;
 
 public class CouchbaseThread implements Runnable{
-	  static int docContentSize;
-      static int docCount;
-      static int docIdSize;
-      static Bucket bucket;
+	  int docContentSize;
+      int docCount;
+      int docIdSize;
+      Bucket bucket;
      
     public CouchbaseThread(int docCotentSize,int docCount, int docIdSize, Bucket bucket) {
     	this.docContentSize = docCotentSize;
