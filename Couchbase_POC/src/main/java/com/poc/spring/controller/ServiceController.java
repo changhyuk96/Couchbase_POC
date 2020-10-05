@@ -19,19 +19,6 @@ public class ServiceController {
 	@Autowired
 	CouchbaseService couchbaseService;
 	
-	
-	@RequestMapping(value="/n1qlExcute", method=RequestMethod.POST) 
-	@ResponseBody
-	public Map<String, Object> n1qlExcute(HttpServletRequest request) throws Exception { 
-		return couchbaseService.excuteDataN1QL(request); 
-	}
-	
-	@RequestMapping(value="/sdkJobExcute", method=RequestMethod.POST) 
-	@ResponseBody
-	public Map<String, Object> sdkJobExcute(HttpServletRequest request) throws Exception { 
-		return couchbaseService.excuteSdkJob(request); 
-	}
-	
 	@RequestMapping(value="/fileUpload", method=RequestMethod.POST) 
 	@ResponseBody
 	public Map<String, Object> fileUpload(MultipartHttpServletRequest mRequest) throws Exception { 
@@ -78,6 +65,31 @@ public class ServiceController {
 	@ResponseBody
 	public Map<String, Object> rebalancing(HttpServletRequest request) throws Exception { 
 		return couchbaseService.rebalancing(request); 
+	}
+	
+	@RequestMapping(value="/documentUpsert", method=RequestMethod.POST) 
+	@ResponseBody
+	public Map<String, Object> documentUpsert(HttpServletRequest request) throws Exception { 
+		return couchbaseService.documentUpsert(request); 
+	}
+	
+	@RequestMapping(value="/dropDocument", method=RequestMethod.POST) 
+	@ResponseBody
+	public Object dropDocument(HttpServletRequest request) throws Exception { 
+		return couchbaseService.dropDocument(request.getParameter("documentId")); 
+	}
+	
+	@RequestMapping(value="/addDocument", method=RequestMethod.POST) 
+	@ResponseBody
+	public Object addDocument(HttpServletRequest request) throws Exception { 
+		return couchbaseService.addDocument(request); 
+	}
+	
+	
+	@RequestMapping(value="/getQueryResult", method=RequestMethod.POST) 
+	@ResponseBody
+	public Object getQueryResult(HttpServletRequest request) throws Exception { 
+		return couchbaseService.getQueryResult(request); 
 	}
 	
 }

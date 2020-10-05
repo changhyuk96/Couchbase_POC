@@ -146,7 +146,7 @@ select {
 	float:right;
 }
 
-input[type="text"], input[type="password"]{
+input[type="text"]:not(.doc), input[type="password"]{
 	height: auto; /* 높이 초기화 */
 	line-height: normal; /* line-height 초기화 */
 	padding: .6em .02em; /* 여백 설정 */

@@ -81,8 +81,19 @@ public class PageController {
 	@RequestMapping(value="/documentDetails") 
 	public String documentDetails(Model model, HttpServletRequest request) { 
 		
+		model.addAttribute("documentId", request.getParameter("documentId"));
 		model.addAttribute("documentDetails", couchbaseService.getDocumentDetails(request.getParameter("documentId")));
 		return "documentDetails"; 
+	}
+	
+	@RequestMapping(value="/newDocument") 
+	public String newDocument() { 
+		return "newDocument"; 
+	}
+	
+	@RequestMapping(value="/queryExcutePage") 
+	public String queryExcutePage() { 
+		return "queryExcutePage"; 
 	}
 	
 	@RequestMapping(value="/hey", method=RequestMethod.POST) 

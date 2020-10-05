@@ -348,60 +348,6 @@ public class CouchbaseService {
 		return null;
 	}
 	
-	public Map<String, Object> excuteDataN1QL(HttpServletRequest request) throws Exception {
-
-		 return null;
-	}
-
-	public Map<String, Object> excuteSdkJob(HttpServletRequest request) throws Exception {
-
-		String jobs = request.getParameter("sdkJobType");
-		String docId = request.getParameter("sdkJobDocId");
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		
-		if (jobs.equals("write")) {
-			
-			JSONObject obj = (JSONObject) parser.parse(request.getParameter("sdkWriInput"));
-			String jsonStr = obj.toString();
-			
-			JsonObject content = JsonObject.fromJson(jsonStr);
-			
-			JsonDocument doc = JsonDocument.create(docId, content); 
-			bucket.insert(doc);
-			resultMap.put("result", "문서 '"+doc.id() + "' 가 정상적으로 등록되었습니다.");
-			
-		 } else if (jobs.equals("read")) {
-			 
-			 StringBuilder statement = new StringBuilder();
-			 
-			 // select * from `test` as t where meta(t).id ="CC";
-			 
-			 statement.append("select * from `");
-			 statement.append(bucket.name());
-			 statement.append("` as t where meta(t).id = \"");
-			 statement.append(docId+"\"");
-			 
-			 N1qlQueryResult result = bucket.query(N1qlQuery.simple(statement.toString()));
-			 
-			 N1qlQueryRow row = result.allRows().get(0);
-			 JsonObject content = row.value();
-			 
-			 resultMap.put("result", content.get("t").toString());
-			 
-		 } else if (jobs.equals("delete")) {
-			 JsonDocument result = bucket.remove(docId);
-			 resultMap.put("result", "문서 '"+result.id() + "' 가 정상적으로 삭제되었습니다.");
-		 } else {
-			 System.out.println(request.getParameter("sdkWriInput"));
-			 N1qlQueryResult result = bucket.query(N1qlQuery.simple(request.getParameter("sdkWriInput").toString()));
-			 
-			 resultMap.put("status", result.status());
-			 resultMap.put("allRows", result.allRows().toString());
-			 resultMap.put("error", result.errors().toString());
-		 }
-		 return resultMap;
-	}
-
 	public Map<String, Object> uploadFile(MultipartHttpServletRequest mRequest) throws Exception {
 
 		String strLocalPath = "C:/upload/"; 			// 로컬 업로드 경로
@@ -686,22 +632,72 @@ public class CouchbaseService {
 		return documentDetails;
 	}
 	
-	/*
-	 *  curl 기본 형식
-	 *  StringBuilder command = new StringBuilder();
-		command.append("curl -X DELETE -u ");
-		command.append(request.getParameter("userName"));
-		command.append(":");
-		command.append(request.getParameter("userPassword"));
-		command.append(" http://");
-		command.append(request.getParameter("hostName"));
-		command.append(":");
-		command.append(request.getParameter("portNumber"));
-		command.append("/pools/default/buckets/");
-		command.append(request.getParameter("bucketName"));
+	public Map<String,Object> documentUpsert(HttpServletRequest request) throws Exception{
 		
-		Map<String, Object> resultMap = serviceUtil.curlExcute(command.toString());
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		String documentId = request.getParameter("documentId");
+		String documentText = request.getParameter("documentText");
+		
+		JSONObject obj = (JSONObject) parser.parse(documentText);
+		String jsonStr = obj.toString();
+		
+		JsonObject content = JsonObject.fromJson(jsonStr);
+		
+		JsonDocument doc = JsonDocument.create(documentId, content); 
+		bucket.upsert(doc);
+		
+		resultMap.put("result", "문서 '"+doc.id() + "' 가 정상적으로 변경되었습니다.");
 		
 		return resultMap;
-	 */
+	}
+	
+	public Object dropDocument(String documentId){
+		 JsonDocument result = bucket.remove(documentId);
+		 
+		 System.out.println(result);
+		 
+		 return "문서가 정상적으로 삭제되었습니다.";
+	}
+	
+	public Object addDocument(HttpServletRequest request){
+
+		String documentId = request.getParameter("documentId");
+		String documentText = request.getParameter("documentText");
+		
+		JSONObject obj;
+		try {
+			obj = (JSONObject) parser.parse(documentText);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+			return "JSON 형식이 잘못되었습니다.";
+		}
+		String jsonStr = obj.toString();
+		JsonObject content = JsonObject.fromJson(jsonStr);
+		
+		try {
+			JsonDocument doc = JsonDocument.create(documentId, content); 
+			bucket.insert(doc);
+		}catch(Exception e) {
+			return "동일한 ID 의 Document가 존재합니다.";
+		}
+		
+		return "문서가 생성되었습니다.";
+	}
+
+	public Map<String, Object> getQueryResult(HttpServletRequest request) throws Exception {
+
+		String queryInput = request.getParameter("queryInput");
+		System.out.println(queryInput);
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		N1qlQueryResult result = bucket.query(N1qlQuery.simple(queryInput));
+
+		resultMap.put("status", result.status());
+		resultMap.put("allRows", result.allRows().toString());
+		resultMap.put("error", result.errors().toString());
+
+		return resultMap;
+	}
 }
