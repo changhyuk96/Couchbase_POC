@@ -22,6 +22,7 @@
 	padding: 5px;
 }
 
+
 #header-tab a.selected {
 	background-color: #79aae4;
 }
@@ -42,13 +43,30 @@
 	background-color: #79aae4;
 }
 
+modal {
+  position:fixed;
+  top:50%; 
+  left:50%;
+  transform: translate(-50%,-50%);
+}
+
 body {
 	font-size: 14px;
 	font-family: Arial, Helvetica, sans-serif;
 	margin: 0;
 	padding: 0;
 	width:100%;
+	  display: block;
 }
+
+td span {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 500px;
+    display: block;
+    overflow: hidden
+}
+
 
 h1 {
 	font-size: 25px;
@@ -86,12 +104,12 @@ h2{
 	font-weight: 400;
 	position: relative;
 	text-decoration: none;
-	font-size: 17px;
+	font-size: 16px;
 }
 
 
 .container-div div {
-	font-size: 20px;
+	font-size: 16px;
 	padding-bottom: 35px;
 }
 
@@ -131,9 +149,10 @@ select {
 input[type="text"], input[type="password"]{
 	height: auto; /* 높이 초기화 */
 	line-height: normal; /* line-height 초기화 */
-	padding: .8em .5em; /* 여백 설정 */
+	padding: .6em .02em; /* 여백 설정 */
 	margin-left: 15px;
 	float: right;
+	width:110px;
 }
 
 input[type="file"] {
@@ -168,12 +187,6 @@ select {
 	background-color: #79aae4;
 }
 
-textarea {
-	width: 90%;
-	height: 180px;
-	background-color: #ebecf0;
-}
-
 .float-frame {
 	background: rgb(255, 255, 255);
 	padding: 10px;
@@ -196,7 +209,8 @@ textarea {
 .bucketTable {
     width: 100%;
     text-align: center;
-    border-collapse: collapse; 
+    border-collapse: collapse;
+    font-size:14px; 
   }
 
 .bucketTable tr{
@@ -206,7 +220,7 @@ textarea {
 .bucketTable tr td, th{
 	padding:15px;
 	margin-top:30px;
-	font-size: 1.1rem;
+	font-size:14px;
   }
 	
 div label{

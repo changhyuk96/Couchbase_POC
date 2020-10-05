@@ -6,8 +6,11 @@
 <meta charset="EUC-KR">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="static/css/index.css">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> -->
+
 </head>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
 <body>
 
 	<div id="header">
@@ -26,6 +29,9 @@
 			<a href="bucketManagePage"> 버킷 </a>
 		</div>
 		<div class="menu">
+			<a href="documentPage"> 문서 </a>
+		</div>
+		<div class="menu">
 			<a href="randomDataPage"> 랜덤 데이터 </a>
 		</div>
 		<div class="menu">
@@ -33,6 +39,9 @@
 		</div>
 		<div class="menu">
 			<a href="CsvOrFileUpsertPage"> 파일 업로드 </a>
+		</div>
+		<div class="menu">
+			<a href="logPage"> 로그 </a>
 		</div>
 	</div>
 

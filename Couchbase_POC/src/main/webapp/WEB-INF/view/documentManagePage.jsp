@@ -5,6 +5,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Couchbase</title>
+<style>
+	textarea {
+	width: 90%;
+	height: 180px;
+	background-color: #ebecf0;
+}
+</style>
 </head>
 <script>
 	function sdkJobExcute() {

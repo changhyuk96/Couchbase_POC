@@ -53,12 +53,11 @@
 	
 	function testButton(){
 		
-		document.querySelector('#txtHostName').value='192.168.0.27';
+		document.querySelector('#txtHostName').value='localhost';
 		document.querySelector('#portNumber').value='8091';
 		document.querySelector('#txtUserName').value='Admin';
 		document.getElementById("pwdPassword").value='tf4220';
 		document.querySelector('#txtBucketName').value='test';
-		
 		connectionData();
 	}
 </script>

@@ -60,7 +60,16 @@ public class ServiceUtils {
 	public String doubleFormat(Object object) {
 		DecimalFormat df = new DecimalFormat("##0.0");
 		
-		return df.format(object);
+		String result;
+		
+		if(object == null) {
+			result = "0.0";
+			return result;
+		}
+		
+		result =  df.format(object);
+		
+		return result;
 	}
 	
 	public List<Object> serviceCheck(JSONArray serviceJsonList){
@@ -87,4 +96,24 @@ public class ServiceUtils {
 		return serviceList;
 	}
 	
+	public List<Object> logMaker(StringBuilder command, String ...name){
+		
+		String names[] = name;
+		List<Object> logList = new ArrayList<Object>();
+		Map<Object,Object> logMap = new HashMap<Object,Object>();
+		
+		for(String logName : names) {
+			String cmd = command.substring(0, command.lastIndexOf("/"))+"/"+logName;
+			System.out.println(cmd);
+			Map<String, Object> resultMap = curlExcute(cmd);
+			
+			Object obj = resultMap.get("result");
+			
+			logMap.put(logName,obj);
+			System.out.println(logMap.size());
+		}
+		
+		logList.add(logMap);
+		return logList;
+	}
 }

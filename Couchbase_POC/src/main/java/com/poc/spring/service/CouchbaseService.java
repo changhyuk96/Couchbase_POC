@@ -18,6 +18,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -36,6 +37,7 @@ import com.couchbase.client.java.env.DefaultCouchbaseEnvironment;
 import com.couchbase.client.java.query.N1qlQuery;
 import com.couchbase.client.java.query.N1qlQueryResult;
 import com.couchbase.client.java.query.N1qlQueryRow;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poc.spring.dto.ConnectDTO;
 import com.poc.spring.util.ServiceUtils;
 
@@ -48,12 +50,10 @@ public class CouchbaseService {
 	
 	Cluster cluster;
 	Bucket bucket;
-	
 	ConnectDTO dto;
 	CouchbaseEnvironment env;
 	
 	List<String> hostList = new ArrayList<String>();
-	
 	JSONParser parser = new JSONParser();
 	
 	public Map<String, Object> connectionData(HttpServletRequest request) throws Exception {
@@ -348,7 +348,7 @@ public class CouchbaseService {
 		return null;
 	}
 	
-	public  Map<String, Object> excuteDataN1QL(HttpServletRequest request) throws Exception {
+	public Map<String, Object> excuteDataN1QL(HttpServletRequest request) throws Exception {
 
 		 return null;
 	}
@@ -401,7 +401,6 @@ public class CouchbaseService {
 		 }
 		 return resultMap;
 	}
-
 
 	public Map<String, Object> uploadFile(MultipartHttpServletRequest mRequest) throws Exception {
 
@@ -506,6 +505,7 @@ public class CouchbaseService {
 		command.append(":");
 		command.append(dto.getPortNumber());
 		command.append("/pools/default");
+		System.out.println(command);
 		
 		List<Object> list = new ArrayList<Object>();
 		Map<String,Object> map = serviceUtil.curlExcute(command.toString());
@@ -540,7 +540,6 @@ public class CouchbaseService {
 			
 			return list;
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -593,10 +592,116 @@ public class CouchbaseService {
 			}
 			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return list;
 	}
 
+	public List<Object> getLogs() {
+		
+		// curl -v -X GET -u Admin:tf4220 http://localhost:8091/sasl_logs/[logs-name]
+		
+		if(dto == null)
+			return null;
+		
+		StringBuilder command = new StringBuilder();
+		command.append("curl -X GET -u ");
+		command.append(dto.getStrUserName());
+		command.append(":");
+		command.append(dto.getStrPassword());
+		command.append(" http://");
+		command.append(dto.getStrHostName());
+		command.append(":");
+		command.append(dto.getPortNumber());
+		command.append("/sasl_logs/");
+		
+		String[] logs = { "views" ,
+						"query"
+						
+						};
+		
+		List<Object> logList = serviceUtil.logMaker(command, logs);
+		
+		return logList;
+	}
+	
+	public List<Object> getDocumentList(){
+		
+		if(dto == null)
+			return null;
+		 // select meta(t).id from `test` as t limit 30;
+		
+		 StringBuilder statement = new StringBuilder();
+		 
+		 statement.append("select *, meta(t).id from `");
+		 statement.append(bucket.name());
+		 statement.append("` as t limit 30");
+		 
+		 List<Object> list = new ArrayList<Object>();
+		 
+		 N1qlQueryResult result = bucket.query(N1qlQuery.simple(statement.toString()));
+		 
+		 for(N1qlQueryRow row : result.allRows()) {
+			 JsonObject document = row.value();
+
+			 Map<Object, Object> resultMap = new HashMap<Object, Object>();
+			 resultMap.put("id", document.getString("id"));
+			 resultMap.put("content",  document.getObject("t") );
+			 
+			 list.add(resultMap);
+		 }
+		 
+		 return list;
+	}
+	
+	public Object getDocumentDetails(String documentId) {
+
+		StringBuilder statement = new StringBuilder();
+
+		// select * from `test` as t where meta(t).id ="docId";
+
+		statement.append("select * from `");
+		statement.append(bucket.name());
+		statement.append("` as t where meta(t).id = \"");
+		statement.append(documentId + "\"");
+		
+		N1qlQueryResult result = bucket.query(N1qlQuery.simple(statement.toString()));
+
+		N1qlQueryRow row = result.allRows().get(0);
+		JsonObject content = row.value();
+		JSONObject json = null;
+		String documentDetails = null;
+		
+		try {
+			json = (JSONObject) parser.parse(content.get("t").toString());
+			
+			ObjectMapper mapper = new ObjectMapper();
+			documentDetails = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return documentDetails;
+	}
+	
+	/*
+	 *  curl 기본 형식
+	 *  StringBuilder command = new StringBuilder();
+		command.append("curl -X DELETE -u ");
+		command.append(request.getParameter("userName"));
+		command.append(":");
+		command.append(request.getParameter("userPassword"));
+		command.append(" http://");
+		command.append(request.getParameter("hostName"));
+		command.append(":");
+		command.append(request.getParameter("portNumber"));
+		command.append("/pools/default/buckets/");
+		command.append(request.getParameter("bucketName"));
+		
+		Map<String, Object> resultMap = serviceUtil.curlExcute(command.toString());
+		
+		return resultMap;
+	 */
 }

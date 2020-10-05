@@ -74,7 +74,6 @@ public class ServiceController {
 		return couchbaseService.addNode(request); 
 	}
 	
-	
 	@RequestMapping(value="/rebalancing", method=RequestMethod.POST) 
 	@ResponseBody
 	public Map<String, Object> rebalancing(HttpServletRequest request) throws Exception { 

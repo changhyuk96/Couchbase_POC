@@ -15,13 +15,14 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.poc.spring.service.CouchbaseService;
 
 @Controller
-public class MainController {
+public class PageController {
 	
 	@Autowired
 	CouchbaseService couchbaseService;
 	
 	@RequestMapping("/")
 	public String home() { 
+
 		return "settings"; 
 	} 
 	
@@ -63,11 +64,31 @@ public class MainController {
 		return "header"; 
 	} 
 	
+	@RequestMapping(value="/logPage") 
+	public String logPage(Model model) { 
+		
+		model.addAttribute("logList", couchbaseService.getLogs());
+		return "logPage"; 
+	}
+	
+	@RequestMapping(value="/documentPage") 
+	public String documentPage(Model model) { 
+		
+		model.addAttribute("documentList", couchbaseService.getDocumentList());
+		return "documentPage"; 
+	}
+	
+	@RequestMapping(value="/documentDetails") 
+	public String documentDetails(Model model, HttpServletRequest request) { 
+		
+		model.addAttribute("documentDetails", couchbaseService.getDocumentDetails(request.getParameter("documentId")));
+		return "documentDetails"; 
+	}
+	
 	@RequestMapping(value="/hey", method=RequestMethod.POST) 
 	public String postMethod2(HttpServletRequest request) { 
+		
 		return "hey post"; 
 	}
-
-	
 
 }
