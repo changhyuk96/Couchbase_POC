@@ -30,6 +30,7 @@ import com.couchbase.client.java.query.N1qlQueryResult;
 import com.couchbase.client.java.query.N1qlQueryRow;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.poc.spring.dto.CompactionDTO;
 import com.poc.spring.dto.ConnectDTO;
 import com.poc.spring.dto.SettingDTO;
 import com.poc.spring.util.ServiceUtils;
@@ -768,5 +769,77 @@ public class CouchbaseService {
 		}
 		return "정상적으로 실행되었습니다.";
 		
+	}
+
+	public Object setCompactions(CompactionDTO compactions){
+		
+		if(dto == null)
+			return null;
+		try {
+			System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(compactions));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		
+		StringBuilder baseCommand = new StringBuilder();
+		baseCommand.append("curl -i -X POST -u ");
+		baseCommand.append(dto.getStrUserName());
+		baseCommand.append(":");
+		baseCommand.append(dto.getStrPassword());
+		baseCommand.append(" http://");
+		baseCommand.append(dto.getStrHostName());
+		baseCommand.append(":");
+		baseCommand.append(dto.getPortNumber());
+		
+		StringBuilder compactionCommand = new StringBuilder();
+		compactionCommand.append(baseCommand);
+		compactionCommand.append("/controller/setAutoCompaction");
+		if(compactions.isFragmentationCheckDatabasePer()) {
+			compactionCommand.append(" -d databaseFragmentationThreshold[percentage]=");
+			compactionCommand.append(compactions.getFragmentationPercentDatabase());
+		}
+		if(compactions.isFragmentationCheckDatabaseMB()) {
+			compactionCommand.append(" -d databaseFragmentationThreshold[size]=");
+			int mb = Integer.parseInt(compactions.getFragmentationMBDatabase());
+			compactionCommand.append(mb*1024*1024);
+		}
+		if(compactions.isFragmentationCheckViewPer()) {
+			compactionCommand.append(" -d viewFragmentationThreshold[percentage]=");
+			compactionCommand.append(compactions.getFragmentationPercentView());
+		}
+		if(compactions.isFragmentationCheckViewMB()){
+			compactionCommand.append(" -d viewFragmentationThreshold[size]=");
+			int mb = Integer.parseInt(compactions.getFragmentationMBView());
+			compactionCommand.append(mb*1024*1024);
+		}
+		if(compactions.isTimeIntervalCheck()) {
+			compactionCommand.append(" -d allowedTimePeriod[fromHour]=");
+			compactionCommand.append(compactions.getCompactionFromHour());
+			compactionCommand.append(" -d allowedTimePeriod[fromMinute]=");
+			compactionCommand.append(compactions.getCompactionFromMinute());
+			compactionCommand.append(" -d allowedTimePeriod[toHour]=");
+			compactionCommand.append(compactions.getCompactionToHour());
+			compactionCommand.append(" -d allowedTimePeriod[toMinute]=");
+			compactionCommand.append(compactions.getCompactionToMinute());
+		}
+		
+		compactionCommand.append(" -d allowedTimePeriod[abortOutside]=");
+		compactionCommand.append(compactions.isAbortCompaction());
+		compactionCommand.append(" -d parallelDBAndViewCompaction=");
+		compactionCommand.append(compactions.isCompactParallel());
+		compactionCommand.append(" -d purgeInteval=");
+		compactionCommand.append(compactions.getPurgeInterval());
+		System.out.println(compactionCommand);
+		
+		Map<String,Object> resultMap;
+		try {
+			resultMap = serviceUtil.curlExcute(compactionCommand.toString());
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return "오류입니다";
+		}
+		
+		return resultMap.get("result");
 	}
 }

@@ -83,9 +83,9 @@
 	<!-- header.jsp -->
 	<c:import url="/WEB-INF/view/header.jsp">
 	</c:import>
-
+<form id=clusterSettings name="clusterSettings" style=display:flex;>
 	<div class=container>
-		<form id=clusterSettings name="clusterSettings">
+		
 			<div class=container-div>
 				<h1>클러스터 세팅</h1>
 				<br>
@@ -119,8 +119,7 @@
 
 			</div>
 
-			<div class=container-div
-				style="margin-top: 10px; margin-left: 20px; flex-wrap: wrap;">
+			<div class=container-div style="margin-top: 10px; margin-left: 20px; flex-wrap: wrap;">
 				<h4>- 노드 가용성</h4>
 
 				<div>
@@ -220,10 +219,10 @@
 				</div>
 			</div>
 
-		</form>
+	
 
 	</div>
 
-
+	</form>
 </body>
 </html>

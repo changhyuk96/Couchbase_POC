@@ -53,13 +53,13 @@
 	</c:import>
 	
 
-	<div class=container style="margin-top:50px; ">
-		<div class=container-div style="margin-left:50%; width:100%;">
+	<div class=container>
+		<div class=container-div style="width:50%;">
 
 			<h1>Document</h1>
 			
 			<div style="text-align: center;">
-				<div style="text-align: right; margin-top:-30px;">
+				<div style="display:inline-block; float:right;margin-top:-20px; width:100%">
 					<button class=n1qlexcute onclick="newDocument();">Document 추가</button>
 				</div>	
 				<c:if test="${empty documentList}">
