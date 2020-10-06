@@ -4,8 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="static/css/bootstrap_backup.css">
+
 <title>Couchbase</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 </head>
 <script>
 
@@ -44,19 +45,23 @@
 		var document_window = window.open('newDocument','팝업스','width=500, height=530, left='+left+', top='+popupY+', menubar=no, status=no, toolbar=no')
 	}
 </script>
+
 <body>
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<!-- header.jsp -->
 	<c:import url="/WEB-INF/view/header.jsp">
 	</c:import>
+	
 
-	<div class=container >
-		<div class=container-div>
+	<div class=container style="margin-top:50px; ">
+		<div class=container-div style="margin-left:50%; width:100%;">
+
+			<h1>Document</h1>
+			
 			<div style="text-align: center;">
-				<h1 style="margin-top: -30px;">Document</h1>
-				<br>
-				<br>
-
+				<div style="text-align: right; margin-top:-30px;">
+					<button class=n1qlexcute onclick="newDocument();">Document 추가</button>
+				</div>	
 				<c:if test="${empty documentList}">
 
 					<h2>문서를 확인하려면</h2>
@@ -84,9 +89,6 @@
 					</table>
 				</c:if>
 
-			</div>
-			<div style="text-align: right; margin-right: 15px;">
-				<button class=n1qlexcute onclick="newDocument()">Document 추가</button>
 			</div>
 		</div>
 	</div>

@@ -48,10 +48,9 @@
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<c:import url="/WEB-INF/view/header.jsp">
 	</c:import>
-
 	<div class=container>
-		<div class=container-div>
-			<h1 style="margin-top:-25px;margin-bottom: 50px;">랜덤 데이터 생성</h1>
+		<div class=container-div  style="margin-top: -30px;">
+			<h1 style="margin-bottom: 50px;">랜덤 데이터 생성</h1>
 			<form id="randomDataForm" name="randomDataForm">
 				<div>
 				

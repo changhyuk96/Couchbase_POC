@@ -1,24 +1,19 @@
 package com.poc.spring.service;
 
 import java.io.File;
-import java.nio.charset.StandardCharsets;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -26,10 +21,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.Cluster;
 import com.couchbase.client.java.CouchbaseCluster;
-import com.couchbase.client.java.bucket.BucketType;
-import com.couchbase.client.java.cluster.BucketSettings;
-import com.couchbase.client.java.cluster.ClusterManager;
-import com.couchbase.client.java.cluster.DefaultBucketSettings;
 import com.couchbase.client.java.document.JsonDocument;
 import com.couchbase.client.java.document.json.JsonObject;
 import com.couchbase.client.java.env.CouchbaseEnvironment;
@@ -37,8 +28,10 @@ import com.couchbase.client.java.env.DefaultCouchbaseEnvironment;
 import com.couchbase.client.java.query.N1qlQuery;
 import com.couchbase.client.java.query.N1qlQueryResult;
 import com.couchbase.client.java.query.N1qlQueryRow;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poc.spring.dto.ConnectDTO;
+import com.poc.spring.dto.SettingDTO;
 import com.poc.spring.util.ServiceUtils;
 
 
@@ -55,6 +48,7 @@ public class CouchbaseService {
 	
 	List<String> hostList = new ArrayList<String>();
 	JSONParser parser = new JSONParser();
+	ObjectMapper mapper = new ObjectMapper();
 	
 	public Map<String, Object> connectionData(HttpServletRequest request) throws Exception {
 
@@ -699,5 +693,49 @@ public class CouchbaseService {
 		resultMap.put("error", result.errors().toString());
 
 		return resultMap;
+	}
+	
+	public Object setSettings(SettingDTO settings) throws JsonProcessingException {
+		
+		// curl -v -X POST -u Admin:tf4220 http://localhost:8091/pools/default -d clusterName=10.143.192.101 \
+		//	-d memoryQuota=256 -d indexMemoryQuota=256 -d ftsMemoryQuota=256 -d cbasMemoryQuota=1024 -d eventingMemoryQuota=512
+		
+		if(dto == null)
+			return null;
+		
+		System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(settings));
+		
+		
+		return null;
+		
+//		StringBuilder command = new StringBuilder();
+//		command.append("curl -v -X POST -u ");
+//		command.append(dto.getStrUserName());
+//		command.append(":");
+//		command.append(dto.getStrPassword());
+//		command.append(" http://");
+//		command.append(dto.getStrHostName());
+//		command.append(":");
+//		command.append(dto.getPortNumber());
+//		command.append("/pools/default -d clusterName=");
+//		command.append(settings.getClusterName());
+//		command.append(" -d memoryQuota=");
+//		command.append(settings.getDataServiceQuota());
+//		command.append(" -d indexMemoryQuota=");
+//		command.append(settings.getIndexServiceQuota());
+//		command.append(" -d ftsMemoryQuota=");
+//		command.append(settings.getSearchServiceQuota());
+//		command.append(" -d cbasMemoryQuota=");
+//		command.append(settings.getAnalyticsServiceQuota());
+//		command.append(" -d eventingMemoryQuota=");
+//		command.append(settings.getEventingServiceQuota());
+//		System.out.println(command.toString());
+//		
+//		Map<String,Object> map = serviceUtil.curlExcute(command.toString());
+//		
+//		
+//		
+//		return map;
+		
 	}
 }

@@ -110,7 +110,6 @@ public class ServiceUtils {
 			Object obj = resultMap.get("result");
 			
 			logMap.put(logName,obj);
-			System.out.println(logMap.size());
 		}
 		
 		logList.add(logMap);

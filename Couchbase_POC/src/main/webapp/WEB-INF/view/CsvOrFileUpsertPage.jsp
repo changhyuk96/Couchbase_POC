@@ -69,7 +69,7 @@ function inputCheck(){
 
 	<div class=container>
 		<div class=container-div>
-			<h1 style="margin-top:-25px;margin-bottom: 50px;"> Csv 및 Json 파일 Upsert </h1>
+			<h1 style="margin-bottom: 50px;"> Csv 및 Json 파일 Upsert </h1>
 				<form id="fileUpload" name="fileUpload" enctype="multipart/form-data">
 					
 					<div>
@@ -95,8 +95,8 @@ function inputCheck(){
 			
 		</div>
 		
-		<div class=container-div style="margin-left:200px;">
-			<h1 style="margin-top:-25px;margin-bottom: 50px;"> 작업 결과 </h1>
+		<div class=container-div >
+			<h1 style="margin-bottom: 50px;"> 작업 결과 </h1>
 			<textarea id="uploadResult" name="uploadResult" readonly
 					placeholder="작업을 실행해주세요." style="width:500px; height:500px;">
 			</textarea>

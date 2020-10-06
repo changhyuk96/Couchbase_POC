@@ -20,7 +20,7 @@
 	</div>
 	<div id=header-tab>
 		<div class="menu">
-			<a href="settings"> 서버 </a>
+			<a href="/"> 서버 연결 설정 </a>
 		</div>
 		<div class="menu">
 			<a href="nodeManagePage"> 노드 </a>
@@ -43,6 +43,17 @@
 		</div>
 		<div class="menu">
 			<a href="logPage"> 로그 </a>
+		</div>
+		<div class="menu">
+			<div class=dropdown>
+				<a href="settings"> 환경 설정 </a>
+				<div class="dropdown-content">
+				    <a href="settings">일반 설정</a>
+				    <a href="#">자동 압축</a>
+				    <a href="#">이메일 알림</a>
+				    <a href="#">샘플 버킷</a>
+				  </div>
+			</div>
 		</div>
 	</div>
 

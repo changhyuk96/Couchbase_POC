@@ -1,292 +1,229 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="UTF-8"%>
+	
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Couchbase</title>
-</head>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
+</head>
 <script>
-	function connectionData() {
-		
+
+	function setSetting() {
+
 		var check = inputCheck();
-		if(check == false){
+		if (check == false) {
 			alert('모든 항목을 입력해주세요.');
 			return;
 		}
-		
-		var data = $("#conDataForm").serializeArray();
+
+		var data = jQuery("#clusterSettings").serializeArray();
+
 		$.ajax({
+		    contentType : "application/x-www-form-urlencoded; charset=utf-8",
 			type : "post",
-			url : "conData",
+			url : "setSettings",
 			data : data,
 			error : function(xhr, status, error) {
-				alert('입력이 잘못되었습니다.');
+				alert(data.result);
 			},
 			success : function(data) {
-				alert('설정이 완료되었습니다.');
+				alert(data.result);
 			}
 		});
-	
 	}
-	
-	function inputCheck(){
-		let inputText = $("#conDataForm input[type=text]");
-		
-		for(var i=0;i<inputText.length; i++){
-			
-			if(inputText[i].value == "" || inputText[i].value == null){
-				
-				
-				if( inputText[i].name =="txtSslKeyLoc" ||
-					inputText[i].name =="pwdSslKeyPwd"){
+
+	function inputCheck() {
+		let inputText = $("#clusterSettings input");
+
+		for (var i = 0; i < inputText.length; i++) {
+
+			if (inputText[i].value == "" || inputText[i].value == null) {
+				if(inputText[i].disabled){
 					continue;
-					
 				}
-				
 				return false;
 			}
-		}		
+		}
 		return true;
 	}
 	
-	function testButton(){
-		
-		document.querySelector('#txtHostName').value='localhost';
-		document.querySelector('#portNumber').value='8091';
-		document.querySelector('#txtUserName').value='Admin';
-		document.getElementById("pwdPassword").value='tf4220';
-		document.querySelector('#txtBucketName').value='test';
-		connectionData();
+	function autoFailoverChecking(){
+		if(document.getElementById("autoFailoverCheck").checked==false)
+			$("input.failoverGroup").attr("disabled", true);
+		else
+			$("input.failoverGroup").removeAttr("disabled");
 	}
-</script>
+	
+	function threadCheck(check){
+		if(check.value=='fixedValue'){
+			if(check.name=='readThread'){
+				$("input#readThreadNumber").removeAttr("disabled");
+			}
+			else{
+				$("input#writeThreadNumber").removeAttr("disabled");
+			}
+		}else{
+			
+			if(check.name=='readThread'){
+				$("input#readThreadNumber").attr("disabled", true);
+			}
+			else{
+				$("input#writeThreadNumber").attr("disabled", true);
+			}
+		}
+	}
 
+
+</script>
 <body>
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<!-- header.jsp -->
 	<c:import url="/WEB-INF/view/header.jsp">
 	</c:import>
 
-		<div class="float-frame" style="margin:25px;">
-			<form id="conDataForm" name="conDataForm" >
-				<div><h1>서버 연결 및 환경 구성</h1></div>
-					
-				<div class="float-division" >
-					<h2 style="margin-bottom:-15px;"> - Connection </h2>
-					<div>
-						# 호스트 이름 <input type="text" name="txtHostName" id="txtHostName" />
-					</div>
-					
-					<div>
-						# 포트번호 <input type="text" name="portNumber" id="portNumber" />
-					</div>
-		
-					<div>
-						# 유저 이름 <input type="text" name="txtUserName" id ="txtUserName" />
-					</div>
-		
-					<div>
-						# 패스워드 <input type="password" name="pwdPassword" id ="pwdPassword" />
-					</div>
-		
-					<div>
-						# 버킷 이름 <input type="text" name="txtBucketName" id ="txtBucketName" />
-					</div>
-					
-				<div style="align-items:bottom; text-align:right;">
-						<button type="button" class="n1qlexcute" onclick="testButton();">테스트</button>
-					</div>
-			</div>
-			
-			<div class="float-division">
-				<h2 style="margin-bottom:-15px;"> - Time Out Option </h2>
+	<div class=container>
+		<form id=clusterSettings name="clusterSettings">
+			<div class=container-div>
+				<h1>클러스터 세팅</h1>
+				<br>
+				<br>
 				<div>
-					# Key-Value TimeOut 
-					<input type="text" name="txtKeyValueTO" size="10" value=2500
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+					# 클러스터 이름 <input type="text" name="clusterName" />
 				</div>
+				<h4 style="margin-top: -15px;">- 메모리 할당량 (단위: MB)</h4>
 				<div>
-					# View TimeOut 
-					<input type="text" name="txtViewTO" size="10" value=75000
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+					# Data Service <input type="text" name="dataServiceQuota" />
 				</div>
-				<div>
-					# Query TimeOut 
-					<input type="text" name="txtQueryTO" size="10" value=75000
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-				<div>
-					# Connect TimeOut 
-					<input type="text" name="txtConnectTO" size="10" value=5000
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-				<div>
-					# Disconnect TimeOut 
-					<input type="text" name="txtDisConnectTO" size="10" value=25000
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-				<div>
-					# Connect TimeOut 
-					<input type="text" name="txtManagementTO" size="10" value=75000
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-			</div>
-			
-						
-			<div class="float-division">
-				<h2 style="margin-bottom:-15px; "> - Performance Option </h2>
-				<div>
-					# 노드당 Key:Value EndPoint
-					<input type="text" name="txtKvEndpoints" value=1
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-				<div>
-					# 노드당 View EndPoint
-					<input type="text" name="txtViewEndpoint" value=1
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-				<div>
-					# 노드당 Query EndPoint 
-					<input type="text" name="txtQueryEndpoint" value=1
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-				<div>
-					# TCP NodlLav
-					
-					<label>False</label>
-					<input type="radio" name="rdoTcpNodelayEnable" value="false" checked />
-					
-					<label>True</label>
-					<input type="radio" name="rdoTcpNodelayEnable" value="true" />
-				</div>
-			</div>
-			
-			<div class="float-division">
-				<h2 style="margin-bottom:-15px;"> - Advanced Option </h2>
-				<div>
-					# Ring 버퍼 사이즈 요청
-					<input type="text" name="txtRequestBufferSize" value=16384
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-				<div>
-					# Ring 버퍼 사이즈 응답
-					<input type="text" name="txtResponseBufferSize"	value=16384
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-				<div>
-					# 버퍼 풀 활성화
-					
-					<label>False</label>
-					<input type="radio" name="rdoBufferPoolEnab" value="false" checked />
-					
-					<label>True</label>
-					<input type="radio" name="rdoBufferPoolEnab" value="true" />
-					
-					
-				</div>
-				<br><br>
-				<h2 style="margin-bottom:-15px;"> - Reliablility Option </h2>
-					<div>
-						# 최대 요청 Lifetime
-						<input type="text" name="txtMaxReqLifeTime" 
-							value=75000 onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-					</div>
-					<div>
-						# 소켓 유지 시간
-						<input type="text" name="txtKeepAliveInterval" 
-							value=30000 onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-					</div>
-			</div>
-			
-			
-			<div class="float-division" style="height:auto;">
-				<h2 style="margin-bottom:-15px;"> - BootStrap Option </h2>
-				
-				<div>
-					# 암호화 사용
-					
-					<label>False</label>
-					<input type="radio" name="rdoSslEnable" value="false" checked /> 
-					
-					<label>True</label>
-					<input type="radio" name="rdoSslEnable" value="true" />
-				</div>
-				
-				<div>
-					# SSL 키 저장소 위치
-					<input type="text" name="txtSslKeyLoc" value="" />
-				</div>
-				
-				<div>
-					# SSL 키 저장소 비밀번호
-					<input type="password" name="pwdSslKeyPwd" value="" />
-				</div>
-				<div>
-					# HTTP를 통한 Config 로드
 
-					<label>False</label>
-					<input type="radio" name="rdoHttpEnabled" value="false" /> 
-					
-					<label>True</label>
-					<input type="radio" name="rdoHttpEnabled" value="true" checked />
+				<div>
+					# Index Service <input type="text" name="indexServiceQuota" />
 				</div>
 				<div>
-					# HTTP 비 암호화 포트 설정
-					<input type="text" name="txtHttpDirectPort" value=8891
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+					# Search Service <input type="text" name="searchServiceQuota" />
 				</div>
 				<div>
-					# HTTP 암호화 포트 설정
-					<input type="text" name="txtHttpSslPort" value=18091
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+					# Analytics Service <input type="text" name="analyticsServiceQuota" />
 				</div>
 				<div>
-					# Carrier Publication을 통해 config 로드
-					<label for="False">False</label>
-					<input type="radio" name="rdoCarrierEnable" value="false" /> 
-					
-					<label for="True">True</label>
-					<input type="radio" name="rdoCarrierEnable" value="true"  checked /> 
-					/>
+					# Eventing Service <input type="text" name="eventingServiceQuota" />
+				</div>
+
+				<div>
+					# 최신버전 업데이트 알림
+					<input type="checkbox" name="noticeUpdate" value="true" checked>
+					<input type='hidden' value='false' name='noticeUpdate'>
+				</div>
+
+			</div>
+
+			<div class=container-div
+				style="margin-top: 10px; margin-left: 20px; flex-wrap: wrap;">
+				<h4>- 노드 가용성</h4>
+
+				<div>
+					<input type="checkbox" name="autoFailoverCheck" id="autoFailoverCheck" value="true" checked	onchange="autoFailoverChecking()">
+					<input type='hidden' name='autoFailoverCheck' value='false'>
+					# <input type="text" name=failoverSecondTime style="width: 50px;" class=doc />초 동안
+					<input type="text" name="failoverEvent" style="width: 50px;" class=doc /> 개의 이벤트가 실행되지 못하면 오토 페일오버
 				</div>
 				<div>
-					# Carrier 비암호화 포트 설정
-					<input type="text" name="txtCarrierDirectPort"
-						value=11210 onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+					<input type="checkbox" name="autoFailoverDataError" value="true" class=failoverGroup>
+					<input type='hidden' name='autoFailoverDataError' value='false'>
+					# 지속적으로 <input type="text" name="autoFailoverDataErrorSecondTime" style="width: 50px;" class=doc />
+					초 동안 디스크에 데이터 읽고/쓰기 오류가 발생하면 오토 페일 오버
 				</div>
 				<div>
-					# Carrier 암호화 포트 설정
-					<input type="text" name="txtCarrierSslPort" value=11207
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+					<input type="checkbox" name="autoFailoverServerGroup" value="true" class=failoverGroup>
+					<input type='hidden' name="autoFailoverServerGroup" value='false'>
+					 # 서버 그룹의 오토 페일오버 가능 여부
 				</div>
 				<div>
-					# DNS SRV 사용
-					
-					<label for=true>False</label>
-					<input type="radio" name="rdoDnsSrvEnable" value="false" checked /> False
-					
-					<label for=true>True</label>
-					<input type="radio" name="rdoDnsSrvEnable" value="true" />
+					<input type="checkbox" name="autoFailoverStopRebalance" value="true" checked class=failoverGroup>
+					<input type='hidden' name="autoFailoverStopRebalance" value='false'>
+					# 오토 페일오버 수행 시 리밸런싱 중단 가능 여부
 				</div>
 				<div>
-					# 사용 가능한 변조 토큰
-					
-					<label for="False">False</label>
-					<input type="radio" name="rdoMutationTknEnable" value="false" checked /> 
-					
-					<label for="True">True</label>
-					<input type="radio" name="rdoMutationTknEnable" value="true" />
-				</div>
-				
-					<div style="align-items:bottom; text-align:right;">
-					<button type="button" class="n1qlexcute" onclick="connectionData();">저장</button>
+					<input type='hidden' name="autoReprovisioning" value="false">
+					<input type="checkbox" name="autoReprovisioning" value="true" >
+					# Ephemeral 버킷을 포함하는 노드를 사용할 수 없게 되면
+					<input type="text" name="autoReprovisioningNode" style="width: 50px;" class=doc />
+					노드의 복제본을 활성화 상태로 변경
 				</div>
 			</div>
 
+			<div class=container-div
+				style="margin-top: 10px; margin-left: 20px; flex-wrap: wrap;">
+				<h4>- Setting etc</h4>
+
+				<div>
+					<h5>
+						읽기 쓰레드 수 
+						<input type="text" name="readThreadNumber" id=readThreadNumber style="width: 50px; float: right;" class=doc disabled />
+					</h5>
+					
+					<label>Fixed value</label>
+					<input type="radio" name="readThread" value="fixedValue" onchange="threadCheck(this);" /> 
+					
+					<label>DiskI/O optimized</label>
+					<input type="radio" name="readThread" value="diskIoOptimized" onchange="threadCheck(this);" />
+						<label>Default</label>
+					<input type="radio" name="readThread" value="default" checked onchange="threadCheck(this);" />
+				</div>
+
+				<div>
+					<h5>
+						쓰기 쓰레드 수 <input type="text" name="writeThreadNumber" id="writeThreadNumber" style="width: 50px; float: right;" class=doc disabled />
+					</h5>
+					<label>Fixed value</label>
+					<input type="radio" name="writeThread" value="fixedValue" onchange="threadCheck(this);" />
+					<label>Disk I/O optimized</label>
+					<input type="radio" name="writeThread" value="diskIoOptimized" onchange="threadCheck(this);" />
+					<label>Default</label>
+					<input type="radio" name="writeThread" value="default" checked onchange="threadCheck(this);" />
+				</div>
+
+				<div>
+					<h5>인덱스 저장 모드</h5>
+
+					<label>Memory-Optimized</label>
+					<input type="radio" name="IndexStorageMode" value="Memory-Optimized" />
+					<label>Standard Global Secondary</label>
+					<input type="radio" name="IndexStorageMode" value="StandardGlobalSecondary" checked />
+				</div>
+				<div style="margin-top: 10px;">
+					# 인덱서 쓰레드 개수 <input type="text"name="IndexerThreadNumber" style="width: 50px; margin-left: 15px;" class=doc />
+				</div>
+				<div>
+					# 인덱서 로그 레벨 <select name="logLevel" class=docSelect>
+						<option value="silent">Silent</option>
+						<option value="fatal">Fatal</option>
+						<option value="error">error</option>
+						<option value="warn">warn</option>
+						<option value="info" selected>info</option>
+						<option value="verbose">verbose</option>
+						<option value="timing">timing</option>
+						<option value="debug">debug</option>
+						<option value="trace">trace</option>
+					</select>
+				</div>
+				<div>
+					# XDCR 최대 프로세스 수
+					<input type="text"name="XDCRMaximumProcesses" style="" class=doc />
+				</div>
+				
+				
+				<div align="right">
+					<button type="button" class="n1qlexcute" onclick="setSetting();">실행</button>
+				</div>
+			</div>
 
 		</form>
+
 	</div>
+
 
 </body>
 </html>

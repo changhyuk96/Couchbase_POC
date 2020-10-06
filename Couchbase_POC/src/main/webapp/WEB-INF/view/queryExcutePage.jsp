@@ -75,22 +75,24 @@
 	</c:import>
 
 
-	<div class=container>
+	<div class=container style="margin:10px;">
 		<div class=container-div>
-			<h1 style="margin-top:-80px;margin-bottom: 50px;"> 쿼리 작업</h1>
+			<h1 style="margin-bottom: 50px;"> 쿼리 작업</h1>
 			<form id="queryForm" name="queryForm">
-				<textarea id="queryInput" name="queryInput" placeholder="쿼리문을 작성해주세요." style="width:1500px; height:80px; font-size:1.5rem;"></textarea>
+				<textarea id="queryInput" name="queryInput" placeholder="쿼리문을 작성해주세요." style="width:100%; height:80px; font-size:1.5rem;"></textarea>
 	
 				<div align="right" >
 					<button type="button" class="n1qlexcute" onclick="reset();">값 초기화</button>
 					<button type="button" class="n1qlexcute" onclick="queryExcute();">실행</button>
 				</div>
 			</form>
+			</div>
 			
+			<div class=container-div >
 			
-			<h1 style="margin-top:-25px;margin-bottom: 50px;"> 작업 결과 </h1>
+			<h1 style="margin-bottom: 50px;"> 작업 결과 </h1>
 			<textarea id="queryResult" name="queryResult" readonly
-					placeholder="작업을 실행해주세요." style="width:1500px; height:500px;">
+					placeholder="작업을 실행해주세요." style="width:100%; height:500px;">
 			</textarea>
 		</div>
 	</div>

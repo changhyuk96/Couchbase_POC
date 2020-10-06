@@ -23,7 +23,7 @@ public class PageController {
 	@RequestMapping("/")
 	public String home() { 
 
-		return "settings"; 
+		return "index"; 
 	} 
 	
 	@RequestMapping("/settings")

@@ -111,8 +111,7 @@
 	<c:import url="/WEB-INF/view/header.jsp">
 	</c:import>
 
-	<div class=container>
-		
+	<div class=container style="margin-top:45px;">
 		<div class=container-div >
 			<h1>노드 리스트</h1>
 			<div align="right" >
@@ -152,7 +151,7 @@
 			</div>
 		</div>
 		
-		<div class=container-div style="margin-left:80px;">
+		<div class=container-div>
 			<h1>노드 추가</h1><br><br>
 			<form id="addNode" name="addNode" >
 				<div >
@@ -174,7 +173,7 @@
 				</div>
 			</form>
 		</div>
-		<div class=container-div style="margin-left:80px;">
+		<div class=container-div>
 			<h1>노드 제거</h1><br><br>
 			<form id="dropNode" name="dropNode" >
 				<div >

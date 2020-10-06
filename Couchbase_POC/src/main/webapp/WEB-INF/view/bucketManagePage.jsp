@@ -93,7 +93,7 @@
 
 	<div class=container>
 		<div class=container-div>
-			<h1 style="margin-top: -385px;">버킷 리스트</h1><br><br>
+			<h1>버킷 리스트</h1><br><br>
 			<div>
 			<c:if test="${empty bucketList}">
 
@@ -128,8 +128,8 @@
 			</c:if>
 			</div>
 		</div>
-		<div class=container-div style="margin-left:80px;">
-			<h1 style="margin-top: -50px;" >버킷 생성</h1><br><br>
+		<div class=container-div>
+			<h1>버킷 생성</h1><br><br>
 			<form id="createBucket" name="createBucket" >
 				<div >
 					# 호스트 이름 <input type="text" name="hostName" />
@@ -197,8 +197,8 @@
 			</form>
 		</div>
 		
-		<div class=container-div style="margin-left:80px;">
-			<h1 style="margin-top: -350px;">버킷 제거</h1><br><br>
+		<div class=container-div >
+			<h1>버킷 제거</h1><br><br>
 			<form id="dropBucket" name="dropBucket" >
 				<div >
 					# 호스트 이름 <input type="text" name="hostName" />
