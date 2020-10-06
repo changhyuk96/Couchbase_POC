@@ -49,7 +49,7 @@
 				<a href="settings"> 환경 설정 </a>
 				<div class="dropdown-content">
 				    <a href="settings">일반 설정</a>
-				    <a href="#">자동 압축</a>
+				    <a href="autoCompactionPage">자동 압축</a>
 				    <a href="#">이메일 알림</a>
 				    <a href="#">샘플 버킷</a>
 				  </div>

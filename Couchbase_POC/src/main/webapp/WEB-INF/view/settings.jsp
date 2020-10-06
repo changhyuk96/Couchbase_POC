@@ -27,10 +27,10 @@
 			url : "setSettings",
 			data : data,
 			error : function(xhr, status, error) {
-				alert(data.result);
+				alert(data);
 			},
 			success : function(data) {
-				alert(data.result);
+				alert(data);
 			}
 		});
 	}

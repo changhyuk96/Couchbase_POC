@@ -8,6 +8,7 @@ public class SettingDTO {
 	private String searchServiceQuota;
 	private String analyticsServiceQuota;
 	private String eventingServiceQuota;
+	private boolean noticeUpdate;
 	private boolean autoFailoverCheck;
 	private String failoverSecondTime;
 	private String failoverEvent;
@@ -27,6 +28,12 @@ public class SettingDTO {
 	private String XDCRMaximumProcesses;
 	
 	
+	public boolean isNoticeUpdate() {
+		return noticeUpdate;
+	}
+	public void setNoticeUpdate(boolean noticeUpdate) {
+		this.noticeUpdate = noticeUpdate;
+	}
 	public String getReadThread() {
 		return readThread;
 	}

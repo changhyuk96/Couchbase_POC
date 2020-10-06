@@ -91,6 +91,11 @@ public class PageController {
 		return "newDocument"; 
 	}
 	
+	@RequestMapping(value="/autoCompactionPage") 
+	public String autoCompactionPage() { 
+		return "autoCompactionPage"; 
+	}
+	
 	@RequestMapping(value="/queryExcutePage") 
 	public String queryExcutePage() { 
 		return "queryExcutePage"; 

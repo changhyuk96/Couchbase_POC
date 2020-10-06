@@ -111,7 +111,7 @@
 	<c:import url="/WEB-INF/view/header.jsp">
 	</c:import>
 
-	<div class=container style="margin-top:45px;">
+	<div class=container>
 		<div class=container-div >
 			<h1>노드 리스트</h1>
 			<div align="right" >

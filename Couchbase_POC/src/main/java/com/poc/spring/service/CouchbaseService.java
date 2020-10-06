@@ -695,47 +695,78 @@ public class CouchbaseService {
 		return resultMap;
 	}
 	
-	public Object setSettings(SettingDTO settings) throws JsonProcessingException {
+	public Object setSettings(SettingDTO settings){
 		
-		// curl -v -X POST -u Admin:tf4220 http://localhost:8091/pools/default -d clusterName=10.143.192.101 \
-		//	-d memoryQuota=256 -d indexMemoryQuota=256 -d ftsMemoryQuota=256 -d cbasMemoryQuota=1024 -d eventingMemoryQuota=512
+		// https://docs.couchbase.com/server/6.5/manage/manage-settings/general-settings.html#configure-general-settings-with-the-rest-api
 		
 		if(dto == null)
 			return null;
+		try {
+			System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(settings));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 		
-		System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(settings));
+		StringBuilder baseCommand = new StringBuilder();
+		baseCommand.append("curl -v -X POST -u ");
+		baseCommand.append(dto.getStrUserName());
+		baseCommand.append(":");
+		baseCommand.append(dto.getStrPassword());
+		baseCommand.append(" http://");
+		baseCommand.append(dto.getStrHostName());
+		baseCommand.append(":");
+		baseCommand.append(dto.getPortNumber());
 		
+		StringBuilder clusterCommand = new StringBuilder();
+		clusterCommand.append(baseCommand);
+		clusterCommand.append("/pools/default -d clusterName=");
+		clusterCommand.append(settings.getClusterName());
+		clusterCommand.append(" -d memoryQuota=");
+		clusterCommand.append(settings.getDataServiceQuota());
+		clusterCommand.append(" -d indexMemoryQuota=");
+		clusterCommand.append(settings.getIndexServiceQuota());
+		clusterCommand.append(" -d ftsMemoryQuota=");
+		clusterCommand.append(settings.getSearchServiceQuota());
+		clusterCommand.append(" -d cbasMemoryQuota=");
+		clusterCommand.append(settings.getAnalyticsServiceQuota());
+		clusterCommand.append(" -d eventingMemoryQuota=");
+		clusterCommand.append(settings.getEventingServiceQuota());
+		System.out.println(clusterCommand);
 		
-		return null;
+		StringBuilder noticeCommand = new StringBuilder();
+		noticeCommand.append(baseCommand);
+		noticeCommand.append("/settings/stats -d sendStats=");
+		noticeCommand.append(settings.isNoticeUpdate());
+		System.out.println(noticeCommand);
 		
-//		StringBuilder command = new StringBuilder();
-//		command.append("curl -v -X POST -u ");
-//		command.append(dto.getStrUserName());
-//		command.append(":");
-//		command.append(dto.getStrPassword());
-//		command.append(" http://");
-//		command.append(dto.getStrHostName());
-//		command.append(":");
-//		command.append(dto.getPortNumber());
-//		command.append("/pools/default -d clusterName=");
-//		command.append(settings.getClusterName());
-//		command.append(" -d memoryQuota=");
-//		command.append(settings.getDataServiceQuota());
-//		command.append(" -d indexMemoryQuota=");
-//		command.append(settings.getIndexServiceQuota());
-//		command.append(" -d ftsMemoryQuota=");
-//		command.append(settings.getSearchServiceQuota());
-//		command.append(" -d cbasMemoryQuota=");
-//		command.append(settings.getAnalyticsServiceQuota());
-//		command.append(" -d eventingMemoryQuota=");
-//		command.append(settings.getEventingServiceQuota());
-//		System.out.println(command.toString());
-//		
-//		Map<String,Object> map = serviceUtil.curlExcute(command.toString());
-//		
-//		
-//		
-//		return map;
+		StringBuilder nodeCommand = new StringBuilder();
+		nodeCommand.append(baseCommand);
+		nodeCommand.append("/settings/autoFailover -d enabled=");
+		nodeCommand.append(settings.isAutoFailoverCheck());
+		nodeCommand.append(" -d timeout=");
+		nodeCommand.append(settings.getFailoverSecondTime());
+		nodeCommand.append(" -d failoverOnDataDiskIssues[enabled]=");
+		nodeCommand.append(settings.isAutoFailoverDataError());
+		nodeCommand.append(" -d failoverOnDataDiskIssues[timePeriod]=");
+		nodeCommand.append(settings.getAutoFailoverDataErrorSecondTime());
+		nodeCommand.append(" -d failoverServerGroup=");
+		nodeCommand.append(settings.isAutoFailoverServerGroup());
+		nodeCommand.append(" -d maxCount=");
+		nodeCommand.append(settings.getXDCRMaximumProcesses());
+		nodeCommand.append(" -d canAbortRebalance=");
+		nodeCommand.append(settings.isAutoFailoverStopRebalance());
+		System.out.println(nodeCommand);
+		
+		try {
+			serviceUtil.curlExcute(clusterCommand.toString());
+			serviceUtil.curlExcute(noticeCommand.toString());
+			serviceUtil.curlExcute(nodeCommand.toString());
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return "값이 잘못되었습니다.";
+		}
+		return "정상적으로 실행되었습니다.";
 		
 	}
 }
