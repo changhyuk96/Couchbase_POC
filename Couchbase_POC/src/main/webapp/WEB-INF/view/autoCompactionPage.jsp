@@ -57,6 +57,34 @@
 		else
 			$("input#timeGroup").removeAttr("disabled");
 	}
+	
+	function compactionChecking(chk){
+		
+		if(chk.checked==false){
+			if(chk.name=='fragmentationCheckDatabasePer')
+				$("input#fragmentationPercentDatabase").attr("disabled", true);
+			else if(chk.name=='fragmentationCheckDatabaseMB'){
+				$("input#fragmentationMBDatabase").attr("disabled", true);
+			}
+			else if(chk.name=='fragmentationCheckViewPer'){
+				$("input#fragmentationPercentView").attr("disabled", true);
+			}
+			else if(chk.name=='fragmentationCheckViewMB'){
+				$("input#fragmentationMBView").attr("disabled", true);
+			}
+		}else {
+			if(chk.name=='fragmentationCheckDatabasePer')
+				$("input#fragmentationPercentDatabase").removeAttr("disabled");
+			else if(chk.name=='fragmentationCheckDatabaseMB'){
+				$("input#fragmentationMBDatabase").removeAttr("disabled");
+			}
+			else if(chk.name=='fragmentationCheckViewPer'){
+				$("input#fragmentationPercentView").removeAttr("disabled");			}
+			else if(chk.name=='fragmentationCheckViewMB'){
+				$("input#fragmentationMBView").removeAttr("disabled");
+			}
+		}
+	}
 
 
 </script>
@@ -73,22 +101,26 @@
 				<div>
 					<h4 style="margin-top: -15px;">- 데이터베이스 조각화 </h4>
 					<div>
-						<input type="checkbox" name="fragmentationCheckDatabasePer" value="true" style=margin-top:10px;  />
-						<input type="text" name="fragmentationPercentDatabase" class=doc style=width:100px;/>%
+						<input type='hidden' name="fragmentationCheckDatabasePer" value='false'>
+						<input type="checkbox" name="fragmentationCheckDatabasePer" value="true" style=margin-top:10px; checked onchange=compactionChecking(this); />
+						<input type="text" name="fragmentationPercentDatabase" id=fragmentationPercentDatabase class=doc style=width:100px; />%
 					</div>
 					<div>
-						<input type="checkbox" name="fragmentationCheckDatabaseMB" value="true" style=margin-top:10px;/>
-						<input type="text" name="fragmentationMBDatabase" class=doc style=width:100px;/>MB
+						<input type='hidden' name="fragmentationCheckDatabaseMB" value='false'>
+						<input type="checkbox" name="fragmentationCheckDatabaseMB" value="true" style=margin-top:10px; onchange=compactionChecking(this); />
+						<input type="text" name="fragmentationMBDatabase" id=fragmentationMBDatabase class=doc style=width:100px; disabled  />MB
 					</div>
 					
 					<h4 style="margin-top: -15px;">- 뷰 조각화 </h4>
 					<div>
-						<input type="checkbox" name="fragmentationCheckViewPer" value="true" style=margin-top:10px; />
-						<input type="text" name="fragmentationPercentView"  class=doc style=width:100px;/>%
+						<input type='hidden' name="fragmentationCheckViewPer" value='false'>
+						<input type="checkbox" name="fragmentationCheckViewPer" value="true" style=margin-top:10px; checked  onchange=compactionChecking(this); />
+						<input type="text" name="fragmentationPercentView" id=fragmentationPercentView class=doc style=width:100px; />%
 					</div>
 					<div>
-						<input type="checkbox" name="fragmentationCheckViewMB" value="true" style=margin-top:10px; />
-						<input type="text" name="fragmentationMBView"  class=doc style=width:100px;/>MB
+						<input type='hidden' name="fragmentationCheckViewMB" value='false'>
+						<input type="checkbox" name="fragmentationCheckViewMB" value="true" style=margin-top:10px; onchange=compactionChecking(this); />
+						<input type="text" name="fragmentationMBView" id=fragmentationMBView  class=doc style=width:100px; disabled />MB
 					</div>
 				</div>
 			</div>
@@ -127,8 +159,8 @@
 					</div>
 					
 					<div align="right">
-					<button type="button" class="n1qlexcute" onclick="setCompaction();">실행</button>
-				</div>
+						<button type="button" class="n1qlexcute" onclick="setCompaction();">실행</button>
+					</div>
 			</div>
 	</div>
 </form>

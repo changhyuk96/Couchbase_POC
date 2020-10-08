@@ -75,7 +75,7 @@
 	</c:import>
 
 
-	<div class=container style="margin:10px;">
+	<div class=container>
 		<div class=container-div>
 			<h1 style="margin-bottom: 50px;"> 쿼리 작업</h1>
 			<form id="queryForm" name="queryForm">

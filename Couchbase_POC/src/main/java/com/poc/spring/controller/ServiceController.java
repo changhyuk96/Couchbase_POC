@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.poc.spring.dto.CompactionDTO;
 import com.poc.spring.dto.SettingDTO;
+import com.poc.spring.dto.emailDTO;
 import com.poc.spring.service.CouchbaseService;
 
 @Controller
@@ -105,6 +106,13 @@ public class ServiceController {
 	public Object setCompactions(CompactionDTO compactions) throws Exception {
 		
 		return couchbaseService.setCompactions(compactions);
+	}
+	
+	@RequestMapping(value="/setEmailAlerts", method=RequestMethod.POST) 
+	@ResponseBody
+	public Object setEmailAlerts(emailDTO emails) throws Exception {
+		
+		return couchbaseService.setEmailAlerts(emails);
 	}
 	
 }

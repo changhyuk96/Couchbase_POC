@@ -30,6 +30,9 @@
 				alert(data);
 			},
 			success : function(data) {
+				if(data==null || data==''){
+					alert('먼저 서버를 연결해주십시오.');
+				}
 				alert(data);
 			}
 		});

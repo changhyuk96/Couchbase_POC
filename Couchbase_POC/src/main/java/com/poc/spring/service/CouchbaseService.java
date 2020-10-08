@@ -33,6 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poc.spring.dto.CompactionDTO;
 import com.poc.spring.dto.ConnectDTO;
 import com.poc.spring.dto.SettingDTO;
+import com.poc.spring.dto.emailDTO;
 import com.poc.spring.util.ServiceUtils;
 
 
@@ -123,7 +124,7 @@ public class CouchbaseService {
 			  .bufferPoolingEnabled(isBufferPoolEnab)		 
 			  
 			  .build();
-				  
+		
 		
 		cluster = CouchbaseCluster.create(env,dto.getStrHostName());
 		cluster.authenticate(dto.getStrUserName(),dto.getStrPassword());
@@ -838,6 +839,66 @@ public class CouchbaseService {
 		catch(Exception e) {
 			e.printStackTrace();
 			return "오류입니다";
+		}
+		
+		if(resultMap.get("result").toString().contains("HTTP/1.1 200 OK")) {
+			return "설정이 완료되었습니다.";
+		}
+		
+		return resultMap.get("result");
+	}
+	
+	public Object setEmailAlerts(emailDTO emails) {
+		
+		if(dto == null)
+			return null;
+		try {
+			System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(emails));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		
+		StringBuilder baseCommand = new StringBuilder();
+		baseCommand.append("curl -v -X POST -u ");
+		baseCommand.append(dto.getStrUserName());
+		baseCommand.append(":");
+		baseCommand.append(dto.getStrPassword());
+		baseCommand.append(" http://");
+		baseCommand.append(dto.getStrHostName());
+		baseCommand.append(":");
+		baseCommand.append(dto.getPortNumber());
+		
+		StringBuilder emailCommand = new StringBuilder();
+		emailCommand.append(baseCommand);
+		emailCommand.append("/settings/alerts");
+		emailCommand.append(" -d enabled=");
+		emailCommand.append(emails.isEmailAlertCheck());
+		
+		if(emails.isEmailAlertCheck()) {
+			emailCommand.append(" -d emailHost=");
+			emailCommand.append(emails.getEmailServerHost());
+			emailCommand.append(" -d emailPort=");
+			emailCommand.append(emails.getEmailServerPort());
+			emailCommand.append(" -d emailPass=");
+			emailCommand.append(emails.getEmailServerPassword());
+			emailCommand.append(" -d emailEncrypt=");
+			emailCommand.append(emails.isEmailTLS());
+			emailCommand.append(" -d sender=");
+			emailCommand.append(emails.getSender());
+			emailCommand.append(" -d recipients=");
+			emailCommand.append(emails.getRecipients());
+			emailCommand.append(" -d alerts=");
+			emailCommand.append(emails.getAlerts());
+		}
+		System.out.println(emailCommand.toString());
+		Map<String,Object> resultMap;
+		
+		try {
+		resultMap = serviceUtil.curlExcute(emailCommand.toString());
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return "서버쪽 오류입니다.";
 		}
 		
 		return resultMap.get("result");

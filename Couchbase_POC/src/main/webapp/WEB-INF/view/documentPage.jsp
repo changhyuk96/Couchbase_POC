@@ -58,8 +58,8 @@
 
 			<h1>Document</h1>
 			
-			<div style="text-align: center;">
-				<div style="display:inline-block; float:right;margin-top:-20px; width:100%">
+			<div style="text-align: center;width:1000px;">
+				<div style="display:inline-block; float:right;margin-top:-20px; ">
 					<button class=n1qlexcute onclick="newDocument();">Document 추가</button>
 				</div>	
 				<c:if test="${empty documentList}">

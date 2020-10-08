@@ -101,6 +101,11 @@ public class PageController {
 		return "queryExcutePage"; 
 	}
 	
+	@RequestMapping(value="/emailAlertsPage") 
+	public String emailAlertsPage() { 
+		return "emailAlertsPage"; 
+	}
+	
 	@RequestMapping(value="/hey", method=RequestMethod.POST) 
 	public String postMethod2(HttpServletRequest request) { 
 		
