@@ -23,7 +23,7 @@ public class ServiceUtils {
 			Process process = processBuilder.start();
 			String result = IOUtils.toString(process.getInputStream(),StandardCharsets.UTF_8.name());
 			
-			if(result.trim().isEmpty() || result == null) {
+			if(result.trim().isEmpty() || result == null || result.equals("[]")) {
 				resultMap.put("result", "실행이 정상적으로 완료되었습니다.");
 				process.destroy();
 				return resultMap;

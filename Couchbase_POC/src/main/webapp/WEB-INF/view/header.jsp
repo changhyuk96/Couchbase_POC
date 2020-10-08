@@ -51,7 +51,7 @@
 				    <a href="settings">일반 설정</a>
 				    <a href="autoCompactionPage">자동 압축</a>
 				    <a href="emailAlertsPage">이메일 알림</a>
-				    <a href="#">샘플 버킷</a>
+				    <a href="sampleBucketPage">샘플 버킷</a>
 				  </div>
 			</div>
 		</div>

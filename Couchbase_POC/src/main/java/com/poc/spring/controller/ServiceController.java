@@ -115,4 +115,11 @@ public class ServiceController {
 		return couchbaseService.setEmailAlerts(emails);
 	}
 	
+	@RequestMapping(value="/downSampleBucket", method=RequestMethod.POST) 
+	@ResponseBody
+	public Object downSampleBucket(HttpServletRequest request) throws Exception {
+		
+		return couchbaseService.downSampleBucket(request.getParameterValues("sampleBucket"));
+	}
+	
 }

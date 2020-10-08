@@ -314,6 +314,9 @@ public class CouchbaseService {
 		command.append("/pools/default/buckets/");
 		command.append(request.getParameter("bucketName"));
 		
+		if(bucket.name().equals(request.getParameter("bucketName"))){
+			bucket.close();
+		}
 		Map<String, Object> resultMap = serviceUtil.curlExcute(command.toString());
 		
 		return resultMap;
@@ -903,4 +906,57 @@ public class CouchbaseService {
 		
 		return resultMap.get("result");
 	}
+
+	public Object downSampleBucket(String sampleBucketLists[]) {
+		
+		if(dto== null)
+			return "서버 연결을 해주십시오.";
+		
+		List<String> sampleBucketList = new ArrayList<String>();
+		
+		for(int i=0;i<sampleBucketLists.length;i++) {
+			try {
+				cluster.openBucket(sampleBucketLists[i]);
+			}
+			catch(Exception e) {
+				sampleBucketList.add("\\\""+sampleBucketLists[i]+"\\\"");
+			}
+		}
+		
+		StringBuilder bucketCommand;
+		if(sampleBucketList.size() ==0)
+			return "버킷이 이미 존재합니다.";
+		else {
+			bucketCommand = new StringBuilder();
+			bucketCommand.append("curl -u ");
+			bucketCommand.append(dto.getStrUserName());
+			bucketCommand.append(":");
+			bucketCommand.append(dto.getStrPassword());
+			bucketCommand.append(" http://");
+			bucketCommand.append(dto.getStrHostName());
+			bucketCommand.append(":");
+			bucketCommand.append(dto.getPortNumber());
+			bucketCommand.append("/sampleBuckets/install -d [");
+			bucketCommand.append(sampleBucketList.get(0));
+			if(sampleBucketList.size()>1) {
+				bucketCommand.append(",");
+				bucketCommand.append(sampleBucketList.get(1));
+				if(sampleBucketList.size()>2) {
+					bucketCommand.append(",");
+					bucketCommand.append(sampleBucketList.get(2));
+					bucketCommand.append("]");
+				}else
+					bucketCommand.append("]");
+			}
+			else 
+				bucketCommand.append("]");
+		}
+		System.out.println(bucketCommand);
+		
+		String result = serviceUtil.curlExcute(bucketCommand.toString()).get("result").toString();
+		
+		
+		return result;
+	}
+
 }

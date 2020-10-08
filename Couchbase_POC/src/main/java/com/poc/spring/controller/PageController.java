@@ -106,6 +106,11 @@ public class PageController {
 		return "emailAlertsPage"; 
 	}
 	
+	@RequestMapping(value="/sampleBucketPage") 
+	public String sampleBucketPage() { 
+		return "sampleBucketPage"; 
+	}
+	
 	@RequestMapping(value="/hey", method=RequestMethod.POST) 
 	public String postMethod2(HttpServletRequest request) { 
 		
