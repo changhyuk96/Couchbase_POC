@@ -70,7 +70,7 @@ textarea {
 	<div style=text-align:center;margin-top:15px;>
 		<form id=documentForm name=documentForm>
 			<input type="hidden" name=documentId id=documentId value=${documentId } />
-			<textarea id="documentText" name=documentText><c:out value="${documentDetails}" /></textarea>
+			<textarea id="documentText" name=documentText onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}" ><c:out value="${documentDetails}" /></textarea>
 		</form>
 	</div>
 	

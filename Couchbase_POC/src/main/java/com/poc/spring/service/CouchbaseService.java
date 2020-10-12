@@ -3,6 +3,7 @@ package com.poc.spring.service;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,11 @@ import com.couchbase.client.java.env.DefaultCouchbaseEnvironment;
 import com.couchbase.client.java.query.N1qlQuery;
 import com.couchbase.client.java.query.N1qlQueryResult;
 import com.couchbase.client.java.query.N1qlQueryRow;
+import com.couchbase.client.java.search.SearchQuery;
+import com.couchbase.client.java.search.queries.DocIdQuery;
+import com.couchbase.client.java.search.queries.MatchQuery;
+import com.couchbase.client.java.search.result.SearchQueryResult;
+import com.couchbase.client.java.search.result.SearchQueryRow;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poc.spring.dto.CompactionDTO;
@@ -600,18 +606,29 @@ public class CouchbaseService {
 		 return list;
 	}
 	
-	public Object getDocumentDetails(String documentId) {
+	public Object getDocumentDetails(String documentId,String bucketName) {
 
 		StringBuilder statement = new StringBuilder();
 
 		// select * from `test` as t where meta(t).id ="docId";
 
 		statement.append("select * from `");
-		statement.append(bucket.name());
+		if(bucketName==null)
+			statement.append(bucket.name());
+		else
+			statement.append(bucketName);
 		statement.append("` as t where meta(t).id = \"");
 		statement.append(documentId + "\"");
 		
-		N1qlQueryResult result = bucket.query(N1qlQuery.simple(statement.toString()));
+		N1qlQueryResult result;
+		
+		if(bucketName != null) {
+			Bucket tempBucket = cluster.openBucket(bucketName);
+			result = tempBucket.query(N1qlQuery.simple(statement.toString()));
+		}
+		else
+			result = bucket.query(N1qlQuery.simple(statement.toString()));
+		
 
 		N1qlQueryRow row = result.allRows().get(0);
 		JsonObject content = row.value();
@@ -1045,6 +1062,78 @@ public class CouchbaseService {
 		
 		
 		return null;
+	}
+	
+	public Object getIndexes() {
+		Map<String,Object> map = serviceUtil.curlExcute("curl -X GET -u Admin:tf4220 http://localhost:9102/api/vi/stats");
+		
+		System.out.println(map.get("result"));
+		
+		return null;
+	}
+	
+	public Object getFTIList() {
+		
+		if(dto == null)
+			return null;
+		
+		StringBuilder command = new StringBuilder();
+		command.append("curl -u ");
+		command.append(dto.getStrUserName());
+		command.append(":");
+		command.append(dto.getStrPassword());
+		command.append(" http://");
+		command.append(dto.getStrHostName());
+		command.append(":8094/api/index");
+		System.out.println(command);
+		
+		List<Object> list = new ArrayList<Object>();
+		
+		
+		JSONObject json;
+		try {
+			json = (JSONObject) parser.parse((String) serviceUtil.curlExcute(command.toString()).get("result"));
+			JSONObject ftiJson = (JSONObject)((JSONObject)json.get("indexDefs")).get("indexDefs");
+			
+			Iterator i = ftiJson.keySet().iterator();
+			
+			while(i.hasNext()) {
+				JSONObject fti = (JSONObject) ftiJson.get(i.next());
+				
+				Map<Object, Object> map = new HashMap<Object, Object>();
+				map.put("name", fti.get("name"));
+				map.put("bucket", fti.get("sourceName"));
+				
+				list.add(map);
+				
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		return list;
+	}
+	
+	public Object getFTSResult(HttpServletRequest request) {
+		
+		String indexName = request.getParameter("indexName");
+		String searchText = request.getParameter("searchText");
+		
+		MatchQuery query = SearchQuery.match(searchText);
+		Bucket tempBucket = cluster.openBucket(request.getParameter("bucketName"));
+		SearchQueryResult result = tempBucket.query(new SearchQuery(indexName, query).limit(100));
+		
+		List<Object> list = new ArrayList<Object>();
+		
+		for(SearchQueryRow row : result) {
+			list.add(row.id());
+		}
+		
+		return list;
 	}
 	
 }

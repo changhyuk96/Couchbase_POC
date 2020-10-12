@@ -36,6 +36,9 @@
 			<a href="queryExcutePage"> 쿼리 </a>
 		</div>
 		<div class="menu">
+			<a href="ftsPage" > FTS </a>
+		</div>
+		<div class="menu">
 			<a href="randomDataPage"> 랜덤 데이터 </a>
 		</div>
 		<div class="menu">

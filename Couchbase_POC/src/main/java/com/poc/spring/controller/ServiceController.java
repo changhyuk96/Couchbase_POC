@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.poc.spring.dto.CompactionDTO;
 import com.poc.spring.dto.SettingDTO;
@@ -130,6 +131,11 @@ public class ServiceController {
 		return couchbaseService.setQuerySettings(querySettings);
 	}
 	
-	
+	@RequestMapping(value="/getIndexes") 
+	@ResponseBody
+	public Object getIndexes() throws Exception {
+		
+		return couchbaseService.getIndexes();
+	}
 	
 }

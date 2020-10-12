@@ -82,7 +82,7 @@ public class PageController {
 	public String documentDetails(Model model, HttpServletRequest request) { 
 		
 		model.addAttribute("documentId", request.getParameter("documentId"));
-		model.addAttribute("documentDetails", couchbaseService.getDocumentDetails(request.getParameter("documentId")));
+		model.addAttribute("documentDetails", couchbaseService.getDocumentDetails(request.getParameter("documentId"),request.getParameter("bucketName")));
 		return "documentDetails"; 
 	}
 	
@@ -111,9 +111,23 @@ public class PageController {
 		return "sampleBucketPage"; 
 	}
 	
+	@RequestMapping(value="/ftsPage") 
+	public String ftsPage(Model model) { 
+		model.addAttribute("FTIList", couchbaseService.getFTIList());
+		return "ftsPage"; 
+	}
+	
 	@RequestMapping(value="/querySettingPage") 
 	public String querySettingPage() { 
 		return "querySettingPage"; 
+	}
+	
+	@RequestMapping(value="/searchResultPage") 
+	public String searchResultPage(Model model,HttpServletRequest request) {
+		
+		model.addAttribute("bucketName",request.getParameter("bucketName"));
+		model.addAttribute("documentList", couchbaseService.getFTSResult(request));
+		return "searchResultPage"; 
 	}
 	
 	@RequestMapping(value="/hey", method=RequestMethod.POST) 
