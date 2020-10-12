@@ -52,7 +52,8 @@
 				    <a href="autoCompactionPage">자동 압축</a>
 				    <a href="emailAlertsPage">이메일 알림</a>
 				    <a href="sampleBucketPage">샘플 버킷</a>
-				  </div>
+				    <a href="querySettingPage">쿼리 세팅</a>
+				</div>
 			</div>
 		</div>
 	</div>

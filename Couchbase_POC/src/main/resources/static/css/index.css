@@ -134,7 +134,7 @@ input[type="file"]::-webkit-file-upload-button{
    background-image: -moz-linear-gradient(90deg, #d2d0d0 0%, #f0f0f0 100%);
 }
 
-input[type="radio"] {
+input[type="radio"]:not(.docRadio) {
 	width: 20px;
 	height: 20px;
 	margin-left: 15px;

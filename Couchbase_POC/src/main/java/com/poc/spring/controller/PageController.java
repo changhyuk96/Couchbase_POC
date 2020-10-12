@@ -111,6 +111,11 @@ public class PageController {
 		return "sampleBucketPage"; 
 	}
 	
+	@RequestMapping(value="/querySettingPage") 
+	public String querySettingPage() { 
+		return "querySettingPage"; 
+	}
+	
 	@RequestMapping(value="/hey", method=RequestMethod.POST) 
 	public String postMethod2(HttpServletRequest request) { 
 		

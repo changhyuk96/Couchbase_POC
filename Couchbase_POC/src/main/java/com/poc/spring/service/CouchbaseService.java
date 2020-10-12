@@ -34,6 +34,7 @@ import com.poc.spring.dto.CompactionDTO;
 import com.poc.spring.dto.ConnectDTO;
 import com.poc.spring.dto.SettingDTO;
 import com.poc.spring.dto.emailDTO;
+import com.poc.spring.dto.querySettingsDTO;
 import com.poc.spring.util.ServiceUtils;
 
 
@@ -959,4 +960,91 @@ public class CouchbaseService {
 		return result;
 	}
 
+	// querySetting = whiteList error 
+	public Object setQuerySettings(querySettingsDTO querySettings) {
+		
+		if(dto == null)
+			return "서버 연결을 먼저 해주십시오.";
+		
+		try {
+			System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(querySettings));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		
+//		StringBuilder querySetCommand = new StringBuilder();
+//		querySetCommand.append("curl -v -u ");
+//		querySetCommand.append(dto.getStrUserName());
+//		querySetCommand.append(":");
+//		querySetCommand.append(dto.getStrPassword());
+//		querySetCommand.append(" http://");
+//		querySetCommand.append(dto.getStrHostName());
+//		querySetCommand.append(":");
+//		querySetCommand.append(dto.getPortNumber());
+//		querySetCommand.append("/settings/querySettings -d queryTmpSpaceDir=\"");
+//		querySetCommand.append(querySettings.getQueryTmpSpaceDir());
+//		querySetCommand.append("\" -d queryTmpSpaceSize=");
+//		querySetCommand.append(querySettings.getQueryTmpSpaceSize());
+//		querySetCommand.append(" -d queryPipelineBatch=");
+//		querySetCommand.append(querySettings.getQueryPipelineBatch());
+//		querySetCommand.append(" -d queryPipelineCap=");
+//		querySetCommand.append(querySettings.getQueryPipelineCap());
+//		querySetCommand.append(" -d queryScanCap=");
+//		querySetCommand.append(querySettings.getQueryScanCap());
+//		querySetCommand.append(" -d queryTimeout=");
+//		querySetCommand.append(querySettings.getQueryTimeout());
+//		querySetCommand.append(" -d queryPreparedLimit=");
+//		querySetCommand.append(querySettings.getQueryPreparedLimit());
+//		querySetCommand.append(" -d queryCompletedLimit=");
+//		querySetCommand.append(querySettings.getQueryPreparedLimit());
+//		querySetCommand.append(" -d queryCompletedThreshold=");
+//		querySetCommand.append(querySettings.getQueryCompletedThreshold());
+//		querySetCommand.append(" -d queryLogLevel=");
+//		querySetCommand.append(querySettings.getQueryLogLevel());
+//		querySetCommand.append(" -d queryMaxParallelism=");
+//		querySetCommand.append(querySettings.getQueryMaxParallelism());
+//		querySetCommand.append(" -d queryN1QLFeatCtrl=");
+//		querySetCommand.append(querySettings.getQueryN1QLFeatCtrl());
+//		System.out.println(querySetCommand);
+//		
+//		String result1 = serviceUtil.curlExcute(querySetCommand.toString()).get("result").toString();
+//		System.out.println(result1);
+//		if(result1.contains("queryTmpSpaceDir")) {
+//			result1 = "설정이 완료되었습니다";
+//		}
+		// curl -v -X POST -u Admin:tf4220 http://localhost:8091/settings/querySettings/curlWhitelist -d {"all_access": false, "allowed_urls": ["https://company1.com"], disallowed_urls": ["https://company2.com"]}
+		
+		StringBuilder whiteListCommand = new StringBuilder();
+		whiteListCommand.append("curl -v -u ");
+		whiteListCommand.append(dto.getStrUserName());
+		whiteListCommand.append(":");
+		whiteListCommand.append(dto.getStrPassword());
+		whiteListCommand.append(" http://");
+		whiteListCommand.append(dto.getStrHostName());
+		whiteListCommand.append(":");
+		whiteListCommand.append(dto.getPortNumber());
+		whiteListCommand.append("/settings/querySettings/curlWhitelist -d {\r\"all_access\":");
+		whiteListCommand.append(querySettings.isCurlAccessCheck());
+		
+		if(querySettings.isCurlAccessCheck()==false) {
+			whiteListCommand.append(",\r\"allowed_urls\": [");
+			whiteListCommand.append(querySettings.getAllowedURL());
+			whiteListCommand.append("],\r\"disallowed_urls\": [");
+			whiteListCommand.append(querySettings.getDisallowedURL());
+			whiteListCommand.append("]}");
+			
+		}else
+			whiteListCommand.append("}");
+		
+		System.out.println(whiteListCommand);
+		
+		String result = serviceUtil.curlExcute(whiteListCommand.toString()).get("result").toString();
+		
+		System.out.println(result);
+
+		
+		
+		return null;
+	}
+	
 }

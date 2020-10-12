@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.poc.spring.dto.CompactionDTO;
 import com.poc.spring.dto.SettingDTO;
 import com.poc.spring.dto.emailDTO;
+import com.poc.spring.dto.querySettingsDTO;
 import com.poc.spring.service.CouchbaseService;
 
 @Controller
@@ -121,5 +122,14 @@ public class ServiceController {
 		
 		return couchbaseService.downSampleBucket(request.getParameterValues("sampleBucket"));
 	}
+	
+	@RequestMapping(value="/setquerySettings", method=RequestMethod.POST) 
+	@ResponseBody
+	public Object setquerySettings(querySettingsDTO querySettings) throws Exception {
+		
+		return couchbaseService.setQuerySettings(querySettings);
+	}
+	
+	
 	
 }
