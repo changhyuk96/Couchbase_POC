@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -81,7 +82,7 @@ public class ServiceController {
 	@RequestMapping(value="/dropDocument", method=RequestMethod.POST) 
 	@ResponseBody
 	public Object dropDocument(HttpServletRequest request) throws Exception { 
-		return couchbaseService.dropDocument(request.getParameter("documentId")); 
+		return couchbaseService.dropDocument(request.getParameter("bucketName"), request.getParameter("documentId")); 
 	}
 	
 	@RequestMapping(value="/addDocument", method=RequestMethod.POST) 

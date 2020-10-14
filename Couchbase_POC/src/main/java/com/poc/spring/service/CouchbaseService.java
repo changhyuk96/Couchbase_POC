@@ -15,6 +15,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -30,7 +31,6 @@ import com.couchbase.client.java.query.N1qlQuery;
 import com.couchbase.client.java.query.N1qlQueryResult;
 import com.couchbase.client.java.query.N1qlQueryRow;
 import com.couchbase.client.java.search.SearchQuery;
-import com.couchbase.client.java.search.queries.DocIdQuery;
 import com.couchbase.client.java.search.queries.MatchQuery;
 import com.couchbase.client.java.search.result.SearchQueryResult;
 import com.couchbase.client.java.search.result.SearchQueryRow;
@@ -50,8 +50,9 @@ public class CouchbaseService {
 	@Autowired
 	ServiceUtils serviceUtil;
 	
-	Cluster cluster;
-	Bucket bucket;
+	public Cluster cluster;
+	public Bucket bucket;
+	
 	ConnectDTO dto;
 	CouchbaseEnvironment env;
 	
@@ -546,6 +547,7 @@ public class CouchbaseService {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		
 		return list;
 	}
 
@@ -577,17 +579,35 @@ public class CouchbaseService {
 		return logList;
 	}
 	
-	public List<Object> getDocumentList(){
+	public List<Object> getDocumentList(HttpServletRequest request){
 		
 		if(dto == null)
 			return null;
 		 // select meta(t).id from `test` as t limit 30;
 		
+		String limit;
+		if(request.getParameter("limit")==null)
+			limit = "30";
+		else
+			limit = request.getParameter("limit");
+		
+		String bucketName;
+		if(request.getParameter("bucketName")==null)
+			bucketName = bucket.name();
+		else
+			bucketName = request.getParameter("bucketName");
+		
 		 StringBuilder statement = new StringBuilder();
 		 
+		 if(limit == null || limit == "")
+			 limit = "30";
+		 
 		 statement.append("select *, meta(t).id from `");
-		 statement.append(bucket.name());
-		 statement.append("` as t limit 30");
+		 statement.append(bucketName);
+		 statement.append("` as t limit ");
+		 statement.append(limit);
+		 
+		 System.out.println(statement);
 		 
 		 List<Object> list = new ArrayList<Object>();
 		 
@@ -609,27 +629,24 @@ public class CouchbaseService {
 	public Object getDocumentDetails(String documentId,String bucketName) {
 
 		StringBuilder statement = new StringBuilder();
+		String nowBucketName;
 
 		// select * from `test` as t where meta(t).id ="docId";
+		
+		if(bucketName==null || bucketName=="")
+			nowBucketName=bucket.name();
+		else
+			nowBucketName = bucketName;
 
 		statement.append("select * from `");
-		if(bucketName==null)
-			statement.append(bucket.name());
-		else
-			statement.append(bucketName);
-		statement.append("` as t where meta(t).id = \"");
+		statement.append(nowBucketName);
+		statement.append("` as t where meta(t).id =\"");
 		statement.append(documentId + "\"");
 		
-		N1qlQueryResult result;
+		System.out.println(statement);
 		
-		if(bucketName != null) {
-			Bucket tempBucket = cluster.openBucket(bucketName);
-			result = tempBucket.query(N1qlQuery.simple(statement.toString()));
-		}
-		else
-			result = bucket.query(N1qlQuery.simple(statement.toString()));
+		N1qlQueryResult result = cluster.openBucket(nowBucketName).query(N1qlQuery.simple(statement.toString()));
 		
-
 		N1qlQueryRow row = result.allRows().get(0);
 		JsonObject content = row.value();
 		JSONObject json = null;
@@ -662,15 +679,22 @@ public class CouchbaseService {
 		JsonObject content = JsonObject.fromJson(jsonStr);
 		
 		JsonDocument doc = JsonDocument.create(documentId, content); 
-		bucket.upsert(doc);
+		
+		String bucketName;
+		if(request.getParameter("bucketName") == null)
+			bucketName = bucket.name();
+		else
+			bucketName = request.getParameter("bucketName");
+		
+		cluster.openBucket(bucketName).upsert(doc);
 		
 		resultMap.put("result", "문서 '"+doc.id() + "' 가 정상적으로 변경되었습니다.");
 		
 		return resultMap;
 	}
 	
-	public Object dropDocument(String documentId){
-		 JsonDocument result = bucket.remove(documentId);
+	public Object dropDocument(String bucketName,String documentId){
+		 JsonDocument result = cluster.openBucket(bucketName).remove(documentId);
 		 
 		 System.out.println(result);
 		 
@@ -679,6 +703,7 @@ public class CouchbaseService {
 	
 	public Object addDocument(HttpServletRequest request){
 
+		String bucketName = request.getParameter("bucketName");
 		String documentId = request.getParameter("documentId");
 		String documentText = request.getParameter("documentText");
 		
@@ -694,7 +719,7 @@ public class CouchbaseService {
 		
 		try {
 			JsonDocument doc = JsonDocument.create(documentId, content); 
-			bucket.insert(doc);
+			cluster.openBucket(bucketName).insert(doc);
 		}catch(Exception e) {
 			return "동일한 ID 의 Document가 존재합니다.";
 		}

@@ -53,15 +53,14 @@
 <body onunload="closeEvent();">
 
 	<div style=text-align:center;margin-top:15px;>
-		<form id=documentForm name=documentForm>
-			<input type="hidden" name=bucketName id=bucketName value='${bucketName }' />
-			<p>Document ID: <input type="text" name=documentId id=documentId class="doc"/></p>
-			<textarea id="documentText" name=documentText onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}"></textarea>
-		</form>
+		<p>Name: <input type="text" name=documentId id=documentId /></p>
+		<p>Character Filters: <input type="text" name=documentId id=documentId /></p>
+		<p>Tokenizer: <input type="text" name=documentId id=documentId /></p>
+		<p>Token Filters: <input type="text" name=documentId id=documentId /></p>
 	</div>
 	
 	<div style="text-align:right;margin-right:15px;">
-		<button class=n1qlexcute onclick="addDocument()">持失馬奄</button>
+		<button class=n1qlexcute onclick="addFTI()">持失馬奄</button>
 	</div>
 	
 </body>

@@ -60,7 +60,7 @@ body {
 	 display: block;
 }
 
-td span {
+td span,td a {
     white-space: nowrap;
     text-overflow: ellipsis;
     width: 500px;
@@ -280,9 +280,16 @@ div label{
   display: block;
 }
 
-.dropdown-content a:hover {background-color: #669ee0;}
+.dropdown-content a:hover {
+	background-color: #669ee0;
+}
 
-.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropdown-content {
+	display: block;
+}
 
-.dropdown:hover .dropbtn {background-color: #79aae4;}
+.dropdown:hover .dropbtn {
+	background-color: #79aae4;
+}
+
 

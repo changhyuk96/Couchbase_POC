@@ -39,6 +39,12 @@
 			<a href="ftsPage" > FTS </a>
 		</div>
 		<div class="menu">
+			<a href="eventingPage" > 이벤트 </a>
+		</div>
+		<div class="menu">
+			<a href="analyticsPage" > 분석 </a>
+		</div>
+		<div class="menu">
 			<a href="randomDataPage"> 랜덤 데이터 </a>
 		</div>
 		<div class="menu">

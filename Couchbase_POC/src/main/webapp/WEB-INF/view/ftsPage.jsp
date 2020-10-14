@@ -44,7 +44,7 @@
 			
 			<div style="text-align: center;">
 				<div style="display:inline-block; float:right;margin-top:-20px; ">
-					<button class=n1qlexcute >Add Full Text Index</button>
+					<!-- <a href=addFTIPage class=n1qlexcute>Add Full Text Index</a> -->
 				</div>	
 				<c:if test="${empty FTIList}">
 

@@ -5,7 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" type="text/css" href="static/css/bootstrap_backup.css">
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
 <title>Couchbase</title>
 </head>
 <script>
@@ -24,8 +25,8 @@
 			else if ( window.screenLeft > window.screen.width ){
 			left += window.screen.width;
 		}
-
-		var document_window = window.open('documentDetails?documentId='+docId,'팝업스','width=500, height=530, left='+left+', top='+popupY+', menubar=no, status=no, toolbar=no')
+		
+		var document_window = window.open('documentDetails?documentId='+docId+'&bucketName=${bucketName}','팝업스','width=500, height=560, left='+left+', top='+popupY+', menubar=no, status=no, toolbar=no')
 		
 	}
 	
@@ -42,12 +43,19 @@
 			left += window.screen.width;
 		}
 		
-		var document_window = window.open('newDocument','팝업스','width=500, height=530, left='+left+', top='+popupY+', menubar=no, status=no, toolbar=no')
+		var document_window = window.open('newDocument?bucketName=${bucketName}','팝업스','width=500, height=530, left='+left+', top='+popupY+', menubar=no, status=no, toolbar=no')
+	}
+	
+	function bucketChange(){
+		if(document.getElementById("bucketName").value=='-Select Bucket-')
+			return;
+		
+		document.getElementById("documentPageForm").submit();
 	}
 </script>
-
 <body>
-	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	
+	
 	<!-- header.jsp -->
 	<c:import url="/WEB-INF/view/header.jsp">
 	</c:import>
@@ -56,20 +64,38 @@
 	<div class=container>
 		<div class=container-div style="width:50%;">
 
-			<h1>Document</h1>
+			<h1>Document <c:if test="${not empty documentList}">  : ${bucketName } Bucket </c:if></h1> 
 			
 			<div style="text-align: center;width:1000px;">
-				<div style="display:inline-block; float:right;margin-top:-20px; ">
-					<button class=n1qlexcute onclick="newDocument();">Document 추가</button>
-				</div>	
-				<c:if test="${empty documentList}">
 
+
+				<c:if test="${empty documentList}">
 					<h2>문서를 확인하려면</h2>
 					<h2>서버 연결 및 환경 설정을 해주십시오.</h2>
 				</c:if>
 
 
 				<c:if test="${not empty documentList}">
+				<div style="float:right;margin-top:-20px;">
+					<form id=documentPageForm action=documentPage style=display:inline-block;>
+						<input type=text name=limit style="margin-right:25px;margin-left:-5px;" placeholder=default=30>
+						<label style=margin-left:20px;>Limit:</label>
+						
+						<select name=bucketName onchange=bucketChange() id=bucketName>
+								<option value='-Select Bucket-'>-Select Bucket-</option>
+							<c:forEach items="${bucketList }" var="list">
+								<option value=${list.name } <c:if test="${list.name eq bucketName}">selected</c:if>>${list.name }</option>
+							</c:forEach>
+						</select>
+					</form>
+				
+					<button class=n1qlexcute onclick="newDocument();">Document 추가</button>
+				</div>	
+				
+					<div>
+						
+					</div>
+				
 					<table class="table table-striped table-hover">
 						<tr>
 							<th style="text-align: center;">문서 ID</th>
@@ -77,10 +103,8 @@
 						</tr>
 						<c:forEach items="${documentList }" var="list">
 							<tr>
-								<!-- window.open('documentDetails?documentId=${list.id }','팝업스','width=500, height=300, left=3500, top=300, menubar=no, status=no, toolbar=no'); -->
 								<td><a href="#" onclick="openDocument('${list.id}')">${list.id }</a>
 								</td>
-								<!--  openDocument('${list.id}') -->
 
 								<td><span>${list.content }</span></td>
 							</tr>
