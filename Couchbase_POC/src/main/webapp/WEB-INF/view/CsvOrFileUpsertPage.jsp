@@ -66,11 +66,13 @@ function inputCheck(){
 	<!-- header.jsp -->
 	<c:import url="/WEB-INF/view/header.jsp">
 	</c:import>
-
+	
+	
 	<div class=container>
-		<div class=container-div>
-			<h1 style="margin-bottom: 50px;"> Csv 및 Json 파일 Upsert </h1>
-				<form id="fileUpload" name="fileUpload" enctype="multipart/form-data">
+		<div class=row>
+			<div class="mx-auto col-sm-5"><br>
+	        <h4> &nbsp; CSV 혹은 JSON 파일 업로드 </h4><br>
+	        	<form id="fileUpload" name="fileUpload" enctype="multipart/form-data">
 					
 					<div>
 						문서 아이디 :
@@ -80,26 +82,21 @@ function inputCheck(){
 						쓰레드 개수 :
 						<input type="text" name="threadCount"  required="required"
 								onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-					</div>
+					</div><br>
 					<div>
 						파일 경로 : <input id="fileName" name="fileName" type=file
 									accept=".csv, .json" required="required" >
 					</div>
 				</form>
-			<div>
-			</div>
-			
-			<div align="right">
-				<button type="submit" class="n1qlexcute" onclick="uploadFile();">실행</button>
-			</div>
-			
-		</div>
-		
-		<div class=container-div >
-			<h1 style="margin-bottom: 50px;"> 작업 결과 </h1>
-			<textarea id="uploadResult" name="uploadResult" readonly
+				<button type="submit" class="btn btn-primary float-right" onclick="uploadFile();">실행</button>
+	        </div>
+        
+        	<div class="mx-auto col-sm-5"><br>
+        		<h4> &nbsp; 작업 결과</h4><br>
+        		<textarea id="uploadResult" name="uploadResult" readonly
 					placeholder="작업을 실행해주세요." style="width:500px; height:500px;">
-			</textarea>
+				</textarea>
+        	</div>
 		</div>
 	</div>
 

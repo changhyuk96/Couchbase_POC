@@ -25,7 +25,7 @@
 				alert('입력이 잘못되었습니다.');
 			},
 			success : function(data) {
-				alert('요청이 완료되었습니다.');
+				alert(data);
 			}
 		});
 	}
@@ -49,46 +49,38 @@
 	<c:import url="/WEB-INF/view/header.jsp">
 	</c:import>
 	<div class=container>
-		<div class=container-div>
-			<h1 style="margin-bottom: 50px;">랜덤 데이터 생성</h1>
-			<form id="randomDataForm" name="randomDataForm">
-				<div>
-				
-					# 아이디 사이즈(Byte)<input type="text" id="docIdSize" name="docIdSize"
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" /> 
-				</div>
-				<div>
-					# 문서 사이즈 (Byte)
-					<input type="text" id="docSize" name="docSize" 
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-	
-				<div>
-					# 생성할 문서의 수 <input type="text" name="docCount" 
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-	
-				<div>
-					# 문서의 종류
-					<label for=Binary>Binary</label>
-					<input type="radio" name="docType" value="Binary" />
-					<label for=Json>JSON</label>
-					<input type="radio" name="docType" value="Json" checked />
+		<div class=row>
+			<div class="mx-auto col-lg-5" ><br>
+				<h4> &nbsp; 랜덤 데이터 생성 </h4><br>
+					<form id="randomDataForm" name="randomDataForm" class=flexDivCenter>
 					
-				</div>
-	
-				<div>
-					# 쓰레드 수 <input type="text" name="threadCount" 
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-				
-	
-				<div align="right">
-					<button type="button" class="n1qlexcute" onclick="randomData();">실행</button>
-				</div>
-			</form>
+					<div>
+						# 아이디 사이즈(Byte)
+						<input type="text" id="docIdSize" name="docIdSize"
+							onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" /> 
+					</div>
+					<div>
+						# 문서 사이즈 (Byte)
+						<input type="text" id="docSize" name="docSize" 
+							onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+					</div>
+		
+					<div>
+						# 생성할 문서의 수 <input type="text" name="docCount" 
+							onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+					</div>
+		
+					<div>
+						# 쓰레드 수 <input type="text" name="threadCount" 
+							onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+					</div>
+					
+		
+					<button type="button" class="btn btn-primary float-right" onclick="randomData();">실행</button>
+				</form>
+			</div>
 		</div>
 	</div>
-
+	
 </body>
 </html>

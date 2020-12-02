@@ -48,32 +48,35 @@
 	<c:import url="/WEB-INF/view/header.jsp">
 	</c:import>
 	
-	<form id="sampleBucketForm" name="sampleBucketForm" style=display:flex;>
-		<div class="container">
-			<div class="container-div">
-				<h1>샘플 버킷서비스</h1><br><br>
+<form id="sampleBucketForm" name="sampleBucketForm" style=display:flex;>
+	<div class=container>
+		<div class=row>
+			<div class="mx-auto col-lg-5" ><br>
+				<h4> &nbsp; 샘플 버킷서비스</h4><br>
 				<div>
-					<h4 style="margin-top: -15px;">- 테스트를 위해 data, view, index가 포함된 샘플 버킷을 다운로드 받을 수 있습니다.  </h4>
+					<h5>- 테스트를 위해 data, view, index가 포함된 샘플 버킷을 다운로드 받을 수 있습니다.  </h5>
 					<div>
 						<input type="checkbox" name="sampleBucket" value="beer-sample" />
-						beer-sample
+						&nbsp; beer-sample
 					</div>
 					<div>
 						<input type="checkbox" name="sampleBucket" value="travel-sample" />
-						travel-sample
+						&nbsp; travel-sample
 					</div>
 					<div>
 						<input type="checkbox" name="sampleBucket" value="gamesim-sample"/>
-						gamesim-sample
+						&nbsp; gamesim-sample
 					</div>
 				</div>
 				<div align="right">
-					<button type="button" class="n1qlexcute" onclick="downloadSampleBucket();">다운로드</button>
+					<button type="button" class="btn btn-primary float-right" onclick="downloadSampleBucket();">다운로드</button>
 				</div>
+			
 			</div>
 			
 		</div>
-	</form>
+	</div>
+</form>
 
 </body>
 </html>

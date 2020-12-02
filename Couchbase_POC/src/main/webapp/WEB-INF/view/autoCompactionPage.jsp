@@ -93,40 +93,40 @@
 	<!-- header.jsp -->
 	<c:import url="/WEB-INF/view/header.jsp">
 	</c:import>
+	
+	
+	
 <form id="autoCompactionForm" name="autoCompactionForm" style=display:flex;>
 	<div class="container">
-		
-			<div class="container-div" style=margin-left:20%;>
-				<h1>자동 압축</h1><br><br>
-				<div>
-					<h4 style="margin-top: -15px;">- 데이터베이스 조각화 </h4>
+	
+		<div class=row>
+			<div class="mx-auto col-lg-5"><br>
+				<h4> &nbsp; 자동 압축 </h4><br>
+					<h5>- 데이터베이스 조각화 </h5>
 					<div>
 						<input type='hidden' name="fragmentationCheckDatabasePer" value='false'>
 						<input type="checkbox" name="fragmentationCheckDatabasePer" value="true" style=margin-top:10px; checked onchange=compactionChecking(this); />
 						<input type="text" name="fragmentationPercentDatabase" id=fragmentationPercentDatabase class=doc style=width:100px; />%
-					</div>
+					</div><br>
 					<div>
 						<input type='hidden' name="fragmentationCheckDatabaseMB" value='false'>
 						<input type="checkbox" name="fragmentationCheckDatabaseMB" value="true" style=margin-top:10px; onchange=compactionChecking(this); />
 						<input type="text" name="fragmentationMBDatabase" id=fragmentationMBDatabase class=doc style=width:100px; disabled  />MB
 					</div>
 					
-					<h4 style="margin-top: -15px;">- 뷰 조각화 </h4>
+					<h5>- 뷰 조각화</h5>
 					<div>
 						<input type='hidden' name="fragmentationCheckViewPer" value='false'>
 						<input type="checkbox" name="fragmentationCheckViewPer" value="true" style=margin-top:10px; checked  onchange=compactionChecking(this); />
 						<input type="text" name="fragmentationPercentView" id=fragmentationPercentView class=doc style=width:100px; />%
-					</div>
+					</div><br>
 					<div>
 						<input type='hidden' name="fragmentationCheckViewMB" value='false'>
 						<input type="checkbox" name="fragmentationCheckViewMB" value="true" style=margin-top:10px; onchange=compactionChecking(this); />
 						<input type="text" name="fragmentationMBView" id=fragmentationMBView  class=doc style=width:100px; disabled />MB
-					</div>
-				</div>
-			</div>
-		
-			<div class="container-div" style=margin-left:-10%;>
-					<h4 style="margin-top: 50px;">- 압축 실행시간 간격 </h4>
+					</div><br>
+				
+					<h5> - 압축 실행 간격 </h5>
 					<div>
 						<input type="checkbox" name="timeIntervalCheck" id=timeIntervalCheck value="true" style=margin-top:10px; onchange=compactionTimeCheck() />
 						<input type='hidden' name="timeIntervalCheck" value='false'>
@@ -151,17 +151,18 @@
 						<input type="checkbox" name="compactParallel" value="true"  />
 						<input type='hidden' name="compactParallel" value='false'>
 						버킷과 뷰, 인덱스를 병렬로 압축
-					</div>
-					<div>
-						<h4>- 메타데이터의 삭제 빈도  [0.04(1시간)~60(60일)]</h4>
-						<input type="text" name="purgeInterval" class=doc style=width:100px; placeholder=3 />days
-						
-					</div>
+					</div><br>
 					
-					<div align="right">
-						<button type="button" class="n1qlexcute" onclick="setCompaction();">실행</button>
-					</div>
+					<h5>- 메타데이터의 삭제 빈도  [0.04(1시간)~60(60일)]</h5>
+					<input type="text" name="purgeInterval" class=doc style=width:100px; placeholder=3 />days
+					
+					<br>
+					<button type="button" class="btn btn-primary float-right" onclick="setCompaction();">실행</button>
 			</div>
+			
+		</div>
+		
+		
 	</div>
 </form>
 

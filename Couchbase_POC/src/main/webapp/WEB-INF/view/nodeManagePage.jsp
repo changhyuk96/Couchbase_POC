@@ -110,81 +110,87 @@
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<c:import url="/WEB-INF/view/header.jsp">
 	</c:import>
-
-	<div class=container>
-		<div class=container-div >
-			<h1>노드 리스트</h1>
-			<div align="right" >
-				<button type="button" class="n1qlexcute" onclick="rebalancing();">Rebalance</button>
-			</div><br><br>
-		<div style="margin-top:-50px;">
-			<c:if test="${empty nodeList}">
-
-				<h2> 노드 리스트를 확인하려면 </h2>
-				<h2>서버 연결 및 환경 설정을 해주십시오. </h2>
-			</c:if>
-			
-			<c:if test="${not empty nodeList}">
-				<table class="bucketTable">
-					<tr>
-						<th>노드 이름</th>
-						<th>서비스</th>
-						<th>CPU</th>
-						<th>RAM</th>
-						<th>Swap</th>
-					</tr>
-			
-			
-				<c:forEach items="${nodeList }" var="list" >
-
-					<tr>
-						<td>${list.hostname }</td>
-						<td style=width:100px;>${list.service }</td>
-						<td>${list.cpu }%</td>
-						<td>${list.ram_free}MB / ${list.ram_total }MB</td>
-						<td>${list.swap }</td>
-					</tr>
-					
-				</c:forEach>
-				</table>
-			</c:if>
-			</div>
-		</div>
+	
+	
+	<div class=container-fluid>
+		<div class=row>
+	        <div class="col-xl-5 borderDiv mx-auto"><br>
+	        	<h4> &nbsp; 노드 리스트 </h4>
+	        	<button type="button" class="btn btn-success float-right" onclick="rebalancing();" style="margin-bottom:15px;">Rebalance</button>
+	        	
+	        	<div>
+					<c:if test="${empty nodeList}">
 		
-		<div class=container-div>
-			<h1>노드 추가</h1><br><br>
-			<form id="addNode" name="addNode" >
-				<div >
-					# 호스트 이름 <input type="text" name="hostName" />
+						<h2> 노드 리스트를 확인하려면 </h2>
+						<h2>서버 연결 및 환경 설정을 해주십시오. </h2>
+					</c:if>
+					
+					<c:if test="${not empty nodeList}">
+						<table class="bucketTable table table-striped">
+							<colgroup>
+								<col width="5%" />
+							    <col width="50%" />
+							    <col width="1%" />
+							    <col width="40%" />
+							    <col width="1%" />
+							</colgroup>
+							<tr>
+								<th>노드 이름</th>
+								<th>서비스</th>
+								<th>CPU</th>
+								<th>RAM</th>
+								<th>Swap</th>
+							</tr>
+						<c:forEach items="${nodeList }" var="list" >
+		
+							<tr>
+								<td>${list.hostname }</td>
+								<td style=width:100px;>${list.service }</td>
+								<td>${list.cpu }%</td>
+								<td>${list.ram_free}MB / ${list.ram_total }MB</td>
+								<td>${list.swap }</td>
+							</tr>
+							
+						</c:forEach>
+						</table>
+					</c:if>
 				</div>
-				<div>
-     				 <label><input type="checkbox" name="service" value="kv"> Data</label>
-     				 <label><input type="checkbox" name="service" value="index"> Index</label>
-     				 <label><input type="checkbox" name="service" value="n1ql"> Query</label>
-				</div>
-				<div>
-     				 <label><input type="checkbox" name="service" value="fts"> Search</label>
-     				 <label><input type="checkbox" name="service" value="cbas"> Analytics</label>
-     				 <label><input type="checkbox" name="service" value="eventing"> Eventing</label>
-				</div>
+			
+	        </div>
+	        
+	        <div class="col-xl-3 borderDiv mx-auto"><br>
+	        	<h4> &nbsp; 노드 추가 </h4> <br>
+	        	<form id="addNode" name="addNode" class=flexDiv>
+					<div >
+						# 호스트 이름 <input type="text" name="hostName" />
+					</div>
+					<div>
+	     				 <label><input type="checkbox" name="service" value="kv"> Data</label>
+	     				 <label><input type="checkbox" name="service" value="index"> Index</label>
+	     				 <label><input type="checkbox" name="service" value="n1ql"> Query</label>
+					</div>
+					<div>
+	     				 <label><input type="checkbox" name="service" value="fts"> Search</label>
+	     				 <label><input type="checkbox" name="service" value="cbas"> Analytics</label>
+	     				 <label><input type="checkbox" name="service" value="eventing"> Eventing</label>
+					</div>
 					<input type="hidden" name="rebalancing" value="no" />
-				<div align="right">
-					<button type="button" class="n1qlexcute" onclick="addNodeNow();">노드 추가</button>
-				</div>
-			</form>
-		</div>
-		<div class=container-div>
-			<h1>노드 제거</h1><br><br>
-			<form id="dropNode" name="dropNode" >
-				<div >
-					# 호스트 이름 <input type="text" name="dropHostName" />
-				</div>
-					<input type="hidden" name="activeCheck" value="no" />
-				<div align="right">
-					<button type="button" class="n1qlexcute" onclick="dropNodeNow(0);">비정상 상태인 노드 제거</button>
-					<button type="button" class="n1qlexcute" onclick="dropNodeNow(1);">실행중인 노드 제거</button>
-				</div>
-			</form>
+					<button type="button" class="btn btn-primary float-right" onclick="addNodeNow();">노드 추가</button>
+				</form>
+	        </div>
+	        
+        	<div class="col-xl-3 borderDiv mx-auto"><br>
+        		<h4> &nbsp; 노드 제거 </h4><br>
+        		<form id="dropNode" name="dropNode" >
+					<div>
+						# 호스트 이름 <input type="text" name="dropHostName" />
+					</div>
+						<input type="hidden" name="activeCheck" value="no" />
+					<button type="button" class="btn btn-warning" onclick="dropNodeNow(0);">비정상 노드 제거</button>
+					<button type="button" class="btn btn-primary" onclick="dropNodeNow(1);">실행중인 노드 제거</button>
+				</form>
+        	
+        	</div>
 		</div>
 	</div>
 

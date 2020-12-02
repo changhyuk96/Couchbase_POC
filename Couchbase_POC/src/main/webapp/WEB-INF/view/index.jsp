@@ -1,18 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="UTF-8"%>
+    pageEncoding="EUC-KR"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Couchbase</title>
-</head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"><!-- ÇÕÃÄÁö°í ÃÖ¼ÒÈ­µÈ ÃÖ½Å ÀÚ¹Ù½ºÅ©¸³Æ® -->
 
 <script>
 	function connectionData() {
 		
 		var check = inputCheck();
 		if(check == false){
-			alert('ëª¨ë“  í•­ëª©ì„ ì…ë ¥í•´ì£¼ì„¸ìš”.');
+			alert('¸ğµç Ç×¸ñÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä.');
 			return;
 		}
 		
@@ -22,10 +22,10 @@
 			url : "conData",
 			data : data,
 			error : function(xhr, status, error) {
-				alert('ì…ë ¥ì´ ì˜ëª»ë˜ì—ˆìŠµë‹ˆë‹¤.');
+				alert('ÀÔ·ÂÀÌ Àß¸øµÇ¾ú½À´Ï´Ù.');
 			},
 			success : function(data) {
-				alert('ì„¤ì •ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.');
+				alert('¼³Á¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.');
 			}
 		});
 	
@@ -61,232 +61,216 @@
 		connectionData();
 	}
 </script>
-
+</head>
 <body>
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<!-- header.jsp -->
 	<c:import url="/WEB-INF/view/header.jsp">
 	</c:import>
+	
+<div class="container-fluid">
+	<form id="conDataForm" name="conDataForm" >
+    <div class="row">
+        <div class="col-lg-2 borderDiv"><br>
+        	<h4> &nbsp; ¿¬°á </h4><br>
+			<div>
+				# È£½ºÆ® ÀÌ¸§ <input type="text" name="txtHostName" id="txtHostName" />
+			</div>
+			
+			<div>
+				# Æ÷Æ®¹øÈ£ <input type="text" name="portNumber" id="portNumber" />
+			</div>
 
-		<div class="float-frame">
-			<form id="conDataForm" name="conDataForm" >
-				<div><h1>ì„œë²„ ì—°ê²° ë° í™˜ê²½ êµ¬ì„±</h1></div><br /><br />
-					
-				<div class="float-division" >
-					<h2 style="margin-bottom:-15px;"> - Connection </h2>
-					<div>
-						# í˜¸ìŠ¤íŠ¸ ì´ë¦„ <input type="text" name="txtHostName" id="txtHostName" />
-					</div>
-					
-					<div>
-						# í¬íŠ¸ë²ˆí˜¸ <input type="text" name="portNumber" id="portNumber" />
-					</div>
-		
-					<div>
-						# ìœ ì € ì´ë¦„ <input type="text" name="txtUserName" id ="txtUserName" />
-					</div>
-		
-					<div>
-						# íŒ¨ìŠ¤ì›Œë“œ <input type="password" name="pwdPassword" id ="pwdPassword" />
-					</div>
-		
-					<div>
-						# ë²„í‚· ì´ë¦„ <input type="text" name="txtBucketName" id ="txtBucketName" />
-					</div>
-					
+			<div>
+				# À¯Àú ÀÌ¸§ <input type="text" name="txtUserName" id ="txtUserName" />
+			</div>
+
+			<div>
+				# ÆĞ½º¿öµå <input type="password" name="pwdPassword" id ="pwdPassword" />
+			</div>
+
+			<div>
+				# ¹öÅ¶ ÀÌ¸§ <input type="text" name="txtBucketName" id ="txtBucketName" />
+			</div>
+			<button style=margin-top:5px; class="btn btn-primary float-right" type=button onclick="testButton();">Å×½ºÆ®</button>
+        </div>
+        <div class="col-lg-2 borderDiv"><br>
+        	<h4> &nbsp; Timeout ¿É¼Ç </h4><br>
+			<div>
+				# Key-Value TimeOut 
+				<input type="text" name="txtKeyValueTO" size="10" value=2500
+					onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+			</div>
+			<div>
+				# View TimeOut 
+				<input type="text" name="txtViewTO" size="10" value=75000
+					onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+			</div>
+			<div>
+				# Query TimeOut 
+				<input type="text" name="txtQueryTO" size="10" value=75000
+					onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+			</div>
+			<div>
+				# Connect TimeOut 
+				<input type="text" name="txtConnectTO" size="10" value=5000
+					onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+			</div>
+			<div>
+				# Disconnect TimeOut 
+				<input type="text" name="txtDisConnectTO" size="10" value=25000
+					onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+			</div>
+			<div>
+				# Connect TimeOut 
+				<input type="text" name="txtManagementTO" size="10" value=75000
+					onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+			</div>
+        </div>
+        <div class="col-lg-2 borderDiv"><br>
+        	<h4> &nbsp; °í±Ş ¿É¼Ç </h4><br>
+			<div>
+				# Ring ¹öÆÛ »çÀÌÁî ¿äÃ»
+				<input type="text" name="txtRequestBufferSize" value=16384
+					onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+			</div>
+			<div>
+				# Ring ¹öÆÛ »çÀÌÁî ÀÀ´ä
+				<input type="text" name="txtResponseBufferSize"	value=16384
+					onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+			</div>
+			<div>
+				# ¹öÆÛ Ç® È°¼ºÈ­ <br>
+				<input type="radio" name="rdoBufferPoolEnab" value="true" />
+				<label>True</label>
+				<input type="radio" name="rdoBufferPoolEnab" value="false" checked />
+				<label>False</label>
+			</div><br>
+			
+			<h4> &nbsp; ½Å·Úµµ ¿É¼Ç </h4><br>
+			<div>
+				# ÃÖ´ë ¿äÃ» Lifetime
+				<input type="text" name="txtMaxReqLifeTime" 
+					value=75000 onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+			</div>
+			<div>
+				# ¼ÒÄÏ À¯Áö ½Ã°£
+				<input type="text" name="txtKeepAliveInterval" 
+					value=30000 onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+			</div>
+        </div>
+        <div class="col-lg-2 borderDiv"><br>
+			<h4> &nbsp; ¼º´É ¿É¼Ç </h4><br>
+			<div>
+				# ³ëµå´ç Key:Value EndPoint
+				<input type="text" name="txtKvEndpoints" value=1
+					onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+			</div>
+			<div>
+				# ³ëµå´ç View EndPoint
+				<input type="text" name="txtViewEndpoint" value=1
+					onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+			</div>
+			<div>
+				# ³ëµå´ç Query EndPoint 
+				<input type="text" name="txtQueryEndpoint" value=1
+					onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+			</div>
+			<div>
+				# TCP Nodelay<br>
+				<input type="radio" name="rdoTcpNodelayEnable" value="true" />
+				<label>True</label>
+				
+				<input type="radio" name="rdoTcpNodelayEnable" value="false" checked />
+				<label>False</label>
+			</div>
+        </div>
+        <div class="col-lg-2 borderDiv" ><br>
+        	<h4> &nbsp; ºÎÆ®½ºÆ®·¦ ¿É¼Ç </h4><br>
+				
+			<div>
+				# ¾ÏÈ£È­ »ç¿ë<br>
+				
+				<input type="radio" name="rdoSslEnable" value="true" />
+				<label>True</label>
+				
+				<input type="radio" name="rdoSslEnable" value="false" checked /> 
+				<label>False</label>
+			</div>
+			
+			<div>
+				# SSL Å° ÀúÀå¼Ò À§Ä¡
+				<input type="text" name="txtSslKeyLoc" value="" />
+			</div>
+			
+			<div>
+				# SSL Å° ÀúÀå¼Ò ºñ¹Ğ¹øÈ£
+				<input type="password" name="pwdSslKeyPwd" value="" />
+			</div>
+			<div>
+				# HTTP¸¦ ÅëÇÑ Config ·Îµå<br>
+				<input type="radio" name="rdoHttpEnabled" value="true" checked />
+				<label>True</label>
+				
+				<input type="radio" name="rdoHttpEnabled" value="false" /> 
+				<label>False</label>
+			</div>
+			<div>
+				# HTTP ºñ ¾ÏÈ£È­ Æ÷Æ® ¼³Á¤
+				<input type="text" name="txtHttpDirectPort" value=8891
+					onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+			</div>
+			<div>
+				# HTTP ¾ÏÈ£È­ Æ÷Æ® ¼³Á¤
+				<input type="text" name="txtHttpSslPort" value=18091
+					onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+			</div>
+        </div>
+        <div class="col-lg-2 borderDiv"  ><br>
+        	<h4> &nbsp; ºÎÆ®½ºÆ®·¦ ¿É¼Ç2 </h4><br>
+        	<div>
+				# Carrier PublicationÀ» ÅëÇØ config ·Îµå<br>
+				
+				<input type="radio" name="rdoCarrierEnable" value="true"  checked /> 
+				<label for="True">True</label>
+				
+				<input type="radio" name="rdoCarrierEnable" value="false" /> 
+				<label for="False">False</label>
+			</div>
+			<div>
+				# Carrier ºñ¾ÏÈ£È­ Æ÷Æ® ¼³Á¤
+				<input type="text" name="txtCarrierDirectPort"
+					value=11210 onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+			</div>
+			<div>
+				# Carrier ¾ÏÈ£È­ Æ÷Æ® ¼³Á¤
+				<input type="text" name="txtCarrierSslPort" value=11207
+					onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+			</div>
+			<div>
+				# DNS SRV »ç¿ë<br>
+				<input type="radio" name="rdoDnsSrvEnable" value="true" />
+				<label for=true>True</label>
+				
+				<input type="radio" name="rdoDnsSrvEnable" value="false" checked /> False
+				<label for=true>False</label>
+			</div>
+			<div>
+				# »ç¿ë °¡´ÉÇÑ º¯Á¶ ÅäÅ«<br>
+				<input type="radio" name="rdoMutationTknEnable" value="true" />
+				<label for="True">True</label>
+				
+				<input type="radio" name="rdoMutationTknEnable" value="false" checked /> 
+				<label for="False">False</label>
+			</div>
+			
 				<div style="align-items:bottom; text-align:right;">
-						<button type="button" class="n1qlexcute" onclick="testButton();">í…ŒìŠ¤íŠ¸</button>
-					</div>
+				<button type="button" class="btn btn-primary" onclick="connectionData();">ÀúÀå</button>
 			</div>
-			
-			<div class="float-division">
-				<h2 style="margin-bottom:-15px;"> - Time Out Option </h2>
-				<div>
-					# Key-Value TimeOut 
-					<input type="text" name="txtKeyValueTO" size="10" value=2500
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-				<div>
-					# View TimeOut 
-					<input type="text" name="txtViewTO" size="10" value=75000
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-				<div>
-					# Query TimeOut 
-					<input type="text" name="txtQueryTO" size="10" value=75000
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-				<div>
-					# Connect TimeOut 
-					<input type="text" name="txtConnectTO" size="10" value=5000
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-				<div>
-					# Disconnect TimeOut 
-					<input type="text" name="txtDisConnectTO" size="10" value=25000
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-				<div>
-					# Connect TimeOut 
-					<input type="text" name="txtManagementTO" size="10" value=75000
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-			</div>
-			
-						
-			<div class="float-division">
-				<h2 style="margin-bottom:-15px; "> - Performance Option </h2>
-				<div>
-					# ë…¸ë“œë‹¹ Key:Value EndPoint
-					<input type="text" name="txtKvEndpoints" value=1
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-				<div>
-					# ë…¸ë“œë‹¹ View EndPoint
-					<input type="text" name="txtViewEndpoint" value=1
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-				<div>
-					# ë…¸ë“œë‹¹ Query EndPoint 
-					<input type="text" name="txtQueryEndpoint" value=1
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-				<div>
-					# TCP NodlLav
-					
-					<label>False</label>
-					<input type="radio" name="rdoTcpNodelayEnable" value="false" checked />
-					
-					<label>True</label>
-					<input type="radio" name="rdoTcpNodelayEnable" value="true" />
-				</div>
-			</div>
-			
-			<div class="float-division">
-				<h2 style="margin-bottom:-15px;"> - Advanced Option </h2>
-				<div>
-					# Ring ë²„í¼ ì‚¬ì´ì¦ˆ ìš”ì²­
-					<input type="text" name="txtRequestBufferSize" value=16384
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-				<div>
-					# Ring ë²„í¼ ì‚¬ì´ì¦ˆ ì‘ë‹µ
-					<input type="text" name="txtResponseBufferSize"	value=16384
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-				<div>
-					# ë²„í¼ í’€ í™œì„±í™”
-					
-					<label>False</label>
-					<input type="radio" name="rdoBufferPoolEnab" value="false" checked />
-					
-					<label>True</label>
-					<input type="radio" name="rdoBufferPoolEnab" value="true" />
-					
-					
-				</div>
-				<br><br>
-				<h2 style="margin-bottom:-15px;"> - Reliablility Option </h2>
-					<div>
-						# ìµœëŒ€ ìš”ì²­ Lifetime
-						<input type="text" name="txtMaxReqLifeTime" 
-							value=75000 onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-					</div>
-					<div>
-						# ì†Œì¼“ ìœ ì§€ ì‹œê°„
-						<input type="text" name="txtKeepAliveInterval" 
-							value=30000 onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-					</div>
-			</div>
-			
-			
-			<div class="float-division">
-				<h2 style="margin-bottom:-15px;"> - BootStrap Option </h2>
-				
-				<div>
-					# ì•”í˜¸í™” ì‚¬ìš©
-					
-					<label>False</label>
-					<input type="radio" name="rdoSslEnable" value="false" checked /> 
-					
-					<label>True</label>
-					<input type="radio" name="rdoSslEnable" value="true" />
-				</div>
-				
-				<div>
-					# SSL í‚¤ ì €ì¥ì†Œ ìœ„ì¹˜
-					<input type="text" name="txtSslKeyLoc" value="" />
-				</div>
-				
-				<div>
-					# SSL í‚¤ ì €ì¥ì†Œ ë¹„ë°€ë²ˆí˜¸
-					<input type="password" name="pwdSslKeyPwd" value="" />
-				</div>
-				<div>
-					# HTTPë¥¼ í†µí•œ Config ë¡œë“œ
-
-					<label>False</label>
-					<input type="radio" name="rdoHttpEnabled" value="false" /> 
-					
-					<label>True</label>
-					<input type="radio" name="rdoHttpEnabled" value="true" checked />
-				</div>
-				<div>
-					# HTTP ë¹„ ì•”í˜¸í™” í¬íŠ¸ ì„¤ì •
-					<input type="text" name="txtHttpDirectPort" value=8891
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-				<div>
-					# HTTP ì•”í˜¸í™” í¬íŠ¸ ì„¤ì •
-					<input type="text" name="txtHttpSslPort" value=18091
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-				<div>
-					# Carrier Publicationì„ í†µí•´ config ë¡œë“œ
-					<label for="False">False</label>
-					<input type="radio" name="rdoCarrierEnable" value="false" /> 
-					
-					<label for="True">True</label>
-					<input type="radio" name="rdoCarrierEnable" value="true"  checked /> 
-					/>
-				</div>
-				<div>
-					# Carrier ë¹„ì•”í˜¸í™” í¬íŠ¸ ì„¤ì •
-					<input type="text" name="txtCarrierDirectPort"
-						value=11210 onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-				<div>
-					# Carrier ì•”í˜¸í™” í¬íŠ¸ ì„¤ì •
-					<input type="text" name="txtCarrierSslPort" value=11207
-						onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
-				</div>
-				<div>
-					# DNS SRV ì‚¬ìš©
-					
-					<label for=true>False</label>
-					<input type="radio" name="rdoDnsSrvEnable" value="false" checked /> False
-					
-					<label for=true>True</label>
-					<input type="radio" name="rdoDnsSrvEnable" value="true" />
-				</div>
-				<div>
-					# ì‚¬ìš© ê°€ëŠ¥í•œ ë³€ì¡° í† í°
-					
-					<label for="False">False</label>
-					<input type="radio" name="rdoMutationTknEnable" value="false" checked /> 
-					
-					<label for="True">True</label>
-					<input type="radio" name="rdoMutationTknEnable" value="true" />
-				</div>
-				
-					<div style="align-items:bottom; text-align:right;">
-					<button type="button" class="n1qlexcute" onclick="connectionData();">ì €ì¥</button>
-				</div>
-			</div>
-
-
-		</form>
-	</div>
+        </div>
+    </div>
+    </form>
+</div>
 
 </body>
 </html>

@@ -29,13 +29,5 @@
 	<c:import url="/WEB-INF/view/header.jsp">
 	</c:import>
 
-		<div class="container">
-			<div class=container-div>
-				
-				<div align="right">
-					<button type="button" class="n1qlexcute" onclick="addFunction();">»ý¼º</button>
-				</div>
-			</div>
-		</div>
 </body>
 </html>

@@ -67,34 +67,36 @@
 		document.getElementById('documentId').value="";
 		document.getElementById('sdkWriInput').value="";
 	}
+	
+	function resize(obj) {
+		  obj.style.height = "1px";
+		  obj.style.height = (12+obj.scrollHeight)+"px";
+		}
 </script>
 <body>
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<!-- header.jsp -->
 	<c:import url="/WEB-INF/view/header.jsp">
 	</c:import>
-
-
-	<div class=container>
-		<div class=container-div>
-			<h1 style="margin-bottom: 50px;"> 쿼리 작업</h1>
-			<form id="queryForm" name="queryForm">
-				<textarea id="queryInput" name="queryInput" placeholder="쿼리문을 작성해주세요." style="width:100%; height:80px; font-size:1.5rem;"></textarea>
 	
-				<div align="right" >
-					<button type="button" class="n1qlexcute" onclick="reset();">값 초기화</button>
-					<button type="button" class="n1qlexcute" onclick="queryExcute();">실행</button>
-				</div>
+	<div class="container">
+	    <div class="row">
+	        <div class="mx-auto col-lg-5"><br>
+	        <h4> &nbsp; 쿼리 작업</h4><br>
+        	<form id="queryForm" name="queryForm">
+				<textarea id="queryInput" name="queryInput" placeholder="쿼리문을 작성해주세요." style="width:100%; height:100%; font-size:1.1rem;" onkeyup=resize(this)></textarea>
+					<button type="button" class="btn btn-primary float-right" onclick="queryExcute();">실행</button>
+					<button type="button" class="btn btn-primary float-right" onclick="reset();" style="margin-right:15px;">값 초기화</button>
 			</form>
-			</div>
-			
-			<div class=container-div >
-			
-			<h1 style="margin-bottom: 50px;"> 작업 결과 </h1>
-			<textarea id="queryResult" name="queryResult" readonly
+	        </div>
+	        
+	        <div class="col-sm-5">
+	        	<h4> &nbsp; 작업 결과 </h4>
+	        	<textarea id="queryResult" name="queryResult" readonly
 					placeholder="작업을 실행해주세요." style="width:100%; height:500px;">
-			</textarea>
-		</div>
+				</textarea>
+	        </div>
+	    </div>
 	</div>
 
 </body>

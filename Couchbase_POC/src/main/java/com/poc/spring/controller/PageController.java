@@ -1,7 +1,5 @@
 package com.poc.spring.controller;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.couchbase.client.java.Bucket;
-import com.couchbase.client.java.Cluster;
 import com.poc.spring.service.CouchbaseService;
 
 @Controller
@@ -26,6 +20,11 @@ public class PageController {
 	public String home() { 
 
 		return "index"; 
+	} 
+	@RequestMapping("/testFile")
+	public String testFile() { 
+		
+		return "testFile"; 
 	} 
 	
 	@RequestMapping("/settings")

@@ -86,17 +86,17 @@
 	<!-- header.jsp -->
 	<c:import url="/WEB-INF/view/header.jsp">
 	</c:import>
+	
 <form id=clusterSettings name="clusterSettings" style=display:flex;>
-	<div class=container>
-		
-			<div class=container-div>
-				<h1>클러스터 세팅</h1>
-				<br>
-				<br>
+	
+	<div class=container-fluid>
+		<div class=row>
+			<div class="mx-auto col-lg-3 flexDiv"><br>
+				<h4> &nbsp; 클러스터 세팅 </h4><br>
 				<div>
 					# 클러스터 이름 <input type="text" name="clusterName" />
 				</div>
-				<h4 style="margin-top: -15px;">- 메모리 할당량 (단위: MB)</h4>
+				<h5>&nbsp;# 메모리 할당량 (단위: MB)</h5>
 				<div>
 					# Data Service <input type="text" name="dataServiceQuota" />
 				</div>
@@ -114,92 +114,95 @@
 					# Eventing Service <input type="text" name="eventingServiceQuota" />
 				</div>
 
-				<div>
+				<div style=display:block;>
 					# 최신버전 업데이트 알림
 					<input type="checkbox" name="noticeUpdate" value="true" checked>
 					<input type='hidden' value='false' name='noticeUpdate'>
 				</div>
-
+				
 			</div>
-
-			<div class=container-div style="margin-top: 10px; margin-left: 20px; flex-wrap: wrap;">
-				<h4>- 노드 가용성</h4>
+			<div class="mx-auto col-lg-4"><br>
+				<h4>&nbsp; 노드 가용성</h4><br>
 
 				<div>
 					<input type="checkbox" name="autoFailoverCheck" id="autoFailoverCheck" value="true" checked	onchange="autoFailoverChecking()">
 					<input type='hidden' name='autoFailoverCheck' value='false'>
-					# <input type="text" name=failoverSecondTime style="width: 50px;" class=doc />초 동안
-					<input type="text" name="failoverEvent" style="width: 50px;" class=doc /> 개의 이벤트가 실행되지 못하면 오토 페일오버
-				</div>
+					# <input type="text" name=failoverSecondTime style="width: 50px; height:25px;" class=doc />초 동안
+					<input type="text" name="failoverEvent" style="width: 50px; height:25px;" class=doc /> 개의 이벤트가 실행되지 못하면 오토 페일오버
+				</div><br>
 				<div>
 					<input type="checkbox" name="autoFailoverDataError" value="true" class=failoverGroup>
 					<input type='hidden' name='autoFailoverDataError' value='false'>
-					# 지속적으로 <input type="text" name="autoFailoverDataErrorSecondTime" style="width: 50px;" class=doc />
+					# 지속적으로 <input type="text" name="autoFailoverDataErrorSecondTime" style="width: 50px; height:25px;" class=doc />
 					초 동안 디스크에 데이터 읽고/쓰기 오류가 발생하면 오토 페일 오버
-				</div>
+				</div><br>
 				<div>
 					<input type="checkbox" name="autoFailoverServerGroup" value="true" class=failoverGroup>
 					<input type='hidden' name="autoFailoverServerGroup" value='false'>
 					 # 서버 그룹의 오토 페일오버 가능 여부
-				</div>
+				</div><br>
 				<div>
 					<input type="checkbox" name="autoFailoverStopRebalance" value="true" checked class=failoverGroup>
 					<input type='hidden' name="autoFailoverStopRebalance" value='false'>
 					# 오토 페일오버 수행 시 리밸런싱 중단 가능 여부
-				</div>
+				</div><br>
 				<div>
 					<input type='hidden' name="autoReprovisioning" value="false">
 					<input type="checkbox" name="autoReprovisioning" value="true" >
 					# Ephemeral 버킷을 포함하는 노드를 사용할 수 없게 되면
-					<input type="text" name="autoReprovisioningNode" style="width: 50px;" class=doc />
+					<input type="text" name="autoReprovisioningNode" style="width: 50px; height:25px;" class=doc />
 					노드의 복제본을 활성화 상태로 변경
 				</div>
 			</div>
-
-			<div class=container-div
-				style="margin-top: 10px; margin-left: 20px; flex-wrap: wrap;">
-				<h4>- Setting etc</h4>
+			<div class="mx-auto col-lg-3"><br>
+				<h4> &nbsp; Setting etc</h4><br>
 
 				<div>
 					<h5>
 						읽기 쓰레드 수 
 						<input type="text" name="readThreadNumber" id=readThreadNumber style="width: 50px; float: right;" class=doc disabled />
 					</h5>
-					
-					<label>Fixed value</label>
-					<input type="radio" name="readThread" value="fixedValue" onchange="threadCheck(this);" /> 
-					
-					<label>DiskI/O optimized</label>
-					<input type="radio" name="readThread" value="diskIoOptimized" onchange="threadCheck(this);" />
+					<div style="display:inline-block;">
+						<input type="radio" name="readThread" value="fixedValue" onchange="threadCheck(this);" /> 
+						<label>Fixed value</label>
+						
+						<input type="radio" name="readThread" value="diskIoOptimized" onchange="threadCheck(this);" />
+						<label>DiskI/O optimized</label>
+						
+						<input type="radio" name="readThread" value="default" checked onchange="threadCheck(this);" />
 						<label>Default</label>
-					<input type="radio" name="readThread" value="default" checked onchange="threadCheck(this);" />
+					</div>
 				</div>
 
 				<div>
 					<h5>
 						쓰기 쓰레드 수 <input type="text" name="writeThreadNumber" id="writeThreadNumber" style="width: 50px; float: right;" class=doc disabled />
 					</h5>
-					<label>Fixed value</label>
-					<input type="radio" name="writeThread" value="fixedValue" onchange="threadCheck(this);" />
-					<label>Disk I/O optimized</label>
-					<input type="radio" name="writeThread" value="diskIoOptimized" onchange="threadCheck(this);" />
-					<label>Default</label>
-					<input type="radio" name="writeThread" value="default" checked onchange="threadCheck(this);" />
+					<div style="display:inline-block;">
+						<input type="radio" name="writeThread" value="fixedValue" onchange="threadCheck(this);" />
+						<label>Fixed value</label>
+						
+						<input type="radio" name="writeThread" value="diskIoOptimized" onchange="threadCheck(this);" />
+						<label>Disk I/O optimized</label>
+						
+						<input type="radio" name="writeThread" value="default" checked onchange="threadCheck(this);" />
+						<label>Default</label>
+					</div>
 				</div>
 
 				<div>
 					<h5>인덱스 저장 모드</h5>
-
-					<label>Memory-Optimized</label>
-					<input type="radio" name="IndexStorageMode" value="Memory-Optimized" />
-					<label>Standard Global Secondary</label>
-					<input type="radio" name="IndexStorageMode" value="StandardGlobalSecondary" checked />
-				</div>
-				<div style="margin-top: 10px;">
-					# 인덱서 쓰레드 개수 <input type="text"name="IndexerThreadNumber" style="width: 50px; margin-left: 15px;" class=doc />
+						<input type="radio" name="IndexStorageMode" value="Memory-Optimized" />
+						<label>Memory-Optimized</label>
+						<br>
+						<input type="radio" name="IndexStorageMode" value="StandardGlobalSecondary" checked />
+						<label>Standard Global Secondary</label>
 				</div>
 				<div>
-					# 인덱서 로그 레벨 <select name="logLevel" class=docSelect>
+					# 인덱서 쓰레드 개수 <input type="text"name="IndexerThreadNumber" style="width: 50px; float:right;" class=doc />
+				</div><br>
+				<div>
+					# 인덱서 로그 레벨 <select name="logLevel" class=docSelect style=float:right;>
 						<option value="silent">Silent</option>
 						<option value="fatal">Fatal</option>
 						<option value="error">error</option>
@@ -210,22 +213,15 @@
 						<option value="debug">debug</option>
 						<option value="trace">trace</option>
 					</select>
-				</div>
+				</div><br>
 				<div>
 					# XDCR 최대 프로세스 수
-					<input type="text"name="XDCRMaximumProcesses" style="" class=doc />
-				</div>
-				
-				
-				<div align="right">
-					<button type="button" class="n1qlexcute" onclick="setSetting();">실행</button>
-				</div>
+					<input type="text"name="XDCRMaximumProcesses" style="float:right;" class=doc />
+				</div><br>
+				<button type="button" class="btn btn-primary float-right" onclick="setSetting();">실행</button>
 			</div>
-
-	
-
+		</div>
 	</div>
-
 	</form>
 </body>
 </html>

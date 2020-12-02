@@ -7,7 +7,10 @@
 <meta charset="EUC-KR">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="static/css/index.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"><!-- 합쳐지고 최소화된 최신 자바스크립트 -->
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+
 <style>
 textarea {
 	word-wrap: break-word;
@@ -42,8 +45,10 @@ textarea {
 	
 	function deleteDocument(){
 		
+		if(confirm('삭제하시겠습니까?') == false)
+			return;
 		let data = $("#documentForm").serializeArray();
-
+		
 		$.ajax({
 			type : "post",
 			url : "dropDocument",
@@ -75,9 +80,7 @@ textarea {
 		</form>
 	</div>
 	
-	<div style="text-align:right;margin-right:15px;">
-		<button class=n1qlexcute onclick="deleteDocument()">삭제</button>
-		<button class=n1qlexcute onclick="upsertDocument()">저장</button>
-	</div>
+	<button class="btn btn-primary float-right" onclick="upsertDocument()" style=margin-right:15px;>저장</button>
+	<button class="btn btn-primary float-right" onclick="deleteDocument()" style=margin-right:10px;>삭제</button>
 </body>
 </html>

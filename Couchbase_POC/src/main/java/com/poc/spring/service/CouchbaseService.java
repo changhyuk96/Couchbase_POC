@@ -10,16 +10,17 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.StopWatch;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.couchbase.client.core.env.QueryServiceConfig;
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.Cluster;
 import com.couchbase.client.java.CouchbaseCluster;
@@ -131,8 +132,10 @@ public class CouchbaseService {
 			  .responseBufferSize(intResponseBufferSize)		
 			  .bufferPoolingEnabled(isBufferPoolEnab)		 
 			  
+			  //error 해결 >> [QueryEndpoint]: Got notified from Channel as inactive, attempting reconnect.
+			  .queryServiceConfig(QueryServiceConfig.create(0, 12, 10))
+			  
 			  .build();
-		
 		
 		cluster = CouchbaseCluster.create(env,dto.getStrHostName());
 		cluster.authenticate(dto.getStrUserName(),dto.getStrPassword());
@@ -325,34 +328,31 @@ public class CouchbaseService {
 		if(bucket.name().equals(request.getParameter("bucketName"))){
 			bucket.close();
 		}
+		System.out.println(command.toString());
 		Map<String, Object> resultMap = serviceUtil.curlExcute(command.toString());
 		
 		return resultMap;
 	}
 	
-	public Map<String, Object> makeRandomData(HttpServletRequest request) throws Exception {
+	public Object makeRandomData(HttpServletRequest request) throws Exception {
 
 		int docSize = Integer.parseInt(request.getParameter("docSize"));
 		int docIdSize = Integer.parseInt(request.getParameter("docIdSize"));
 		int docCount = Integer.parseInt(request.getParameter("docCount"));
-		String docType = request.getParameter("docType");
-		String loopYN = request.getParameter("loop");
 		int threadCount = Integer.parseInt(request.getParameter("threadCount"));
-		String docContent;
 		
 		if(bucket == null) {
 			return null;
 		}
 		
 		Runnable couchTr = new CouchbaseThread(docSize, docCount, docIdSize, bucket);
-
 		for (int i = 0; i < threadCount; i++) {
 
 			Thread t1 = new Thread(couchTr);
 			t1.start();
 		}
 		
-		return null;
+		return "음";
 	}
 	
 	public Map<String, Object> uploadFile(MultipartHttpServletRequest mRequest) throws Exception {
@@ -693,7 +693,8 @@ public class CouchbaseService {
 		return resultMap;
 	}
 	
-	public Object dropDocument(String bucketName,String documentId){
+	public Object dropDocument(String bucketName,String documentId) {
+		
 		 JsonDocument result = cluster.openBucket(bucketName).remove(documentId);
 		 
 		 System.out.println(result);
@@ -959,7 +960,8 @@ public class CouchbaseService {
 		
 		for(int i=0;i<sampleBucketLists.length;i++) {
 			try {
-				cluster.openBucket(sampleBucketLists[i]);
+				Bucket b = cluster.openBucket(sampleBucketLists[i]);
+				b.close();
 			}
 			catch(Exception e) {
 				sampleBucketList.add("\\\""+sampleBucketLists[i]+"\\\"");
