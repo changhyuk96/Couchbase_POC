@@ -72,11 +72,10 @@
 	<div class=container>
 		<div class=row>
 			<div class="col-lg-11 mx-auto">
-				<h1>Document <c:if test="${not empty documentList}">  : ${bucketName } Bucket </c:if></h1> 
-			
+				<h4> &nbsp; Document <c:if test="${not empty documentList}">  : ${bucketName } Bucket </c:if></h4> 
+					<br>
 					<c:if test="${empty documentList}">
-						<h2>문서를 확인하려면</h2>
-						<h2>서버 연결 및 환경 설정을 해주십시오.</h2>
+						<h5> &nbsp; 문서를 확인하려면 서버 연결 및 환경 설정을 해주십시오.</h5>
 					</c:if>
 	
 	

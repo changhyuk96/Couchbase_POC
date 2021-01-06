@@ -116,16 +116,13 @@
 		<div class=row>
 	        <div class="col-xl-5 borderDiv mx-auto"><br>
 	        	<h4> &nbsp; 노드 리스트 </h4>
-	        	<button type="button" class="btn btn-success float-right" onclick="rebalancing();" style="margin-bottom:15px;">Rebalance</button>
-	        	
 	        	<div>
 					<c:if test="${empty nodeList}">
-		
-						<h2> 노드 리스트를 확인하려면 </h2>
-						<h2>서버 연결 및 환경 설정을 해주십시오. </h2>
+						<h5> 노드 리스트를 확인하려면 <br>서버 연결 및 환경 설정을 해주십시오. </h5>
 					</c:if>
 					
 					<c:if test="${not empty nodeList}">
+						<button type="button" class="btn btn-success float-right" onclick="rebalancing();" style="margin-bottom:15px;">Rebalance</button>
 						<table class="bucketTable table table-striped">
 							<colgroup>
 								<col width="5%" />

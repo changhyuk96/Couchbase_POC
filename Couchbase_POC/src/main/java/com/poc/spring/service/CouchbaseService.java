@@ -10,7 +10,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.StopWatch;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -137,8 +136,9 @@ public class CouchbaseService {
 			  
 			  .build();
 		
-		cluster = CouchbaseCluster.create(env,dto.getStrHostName());
-		cluster.authenticate(dto.getStrUserName(),dto.getStrPassword());
+//		cluster = CouchbaseCluster.create(env,dto.getStrHostName());
+		cluster = CouchbaseCluster.create(dto.getStrHostName());
+		cluster.authenticate(dto.getStrUserName(), dto.getStrPassword());
 		bucket = cluster.openBucket(dto.getStrBucketName());
 		
 		return null;

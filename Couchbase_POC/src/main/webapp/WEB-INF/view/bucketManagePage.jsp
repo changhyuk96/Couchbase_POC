@@ -97,9 +97,7 @@
 	        	<h4> &nbsp; 버킷 리스트</h4><br>
 				<div>
 					<c:if test="${empty bucketList}">
-		
-						<h2> 버킷 리스트를 확인하려면 </h2>
-						<h2>서버 연결 및 환경 설정을 해주십시오. </h2>
+						<h5> 버킷 리스트를 확인하려면 서버 연결 및 환경 설정을 해주십시오.</h5>
 					</c:if>
 				
 					<c:if test="${not empty bucketList}">

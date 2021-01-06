@@ -91,7 +91,7 @@
 	
 	<div class=container-fluid>
 		<div class=row>
-			<div class="mx-auto col-lg-3 flexDiv"><br>
+			<div class="mx-auto col-lg-3 flexDiv borderDiv"><br>
 				<h4> &nbsp; 클러스터 세팅 </h4><br>
 				<div>
 					# 클러스터 이름 <input type="text" name="clusterName" />
@@ -121,7 +121,7 @@
 				</div>
 				
 			</div>
-			<div class="mx-auto col-lg-4"><br>
+			<div class="mx-auto col-lg-4 borderDiv"><br>
 				<h4>&nbsp; 노드 가용성</h4><br>
 
 				<div>
@@ -154,7 +154,7 @@
 					노드의 복제본을 활성화 상태로 변경
 				</div>
 			</div>
-			<div class="mx-auto col-lg-3"><br>
+			<div class="mx-auto col-lg-3 borderDiv"><br>
 				<h4> &nbsp; Setting etc</h4><br>
 
 				<div>
